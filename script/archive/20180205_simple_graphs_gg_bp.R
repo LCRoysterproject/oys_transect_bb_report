@@ -8,7 +8,7 @@ library("ggplot2")
 library("lubridate")
 library("viridis")
 
-data1<- read.csv("data/LC_transect_data_2018_2019.csv", header= T)
+data1<- read.csv("data/archive/2018_2019_winter_only_transect_data.csv", header= T)
 
 
 ########
