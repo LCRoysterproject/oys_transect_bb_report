@@ -1,2 +1,1 @@
-# oys_transect_bb_report
-The report and imperative summaries of the LCR oyster project transect data.
+This is the `archive` folder. This folder contains previous versions of the current transect report.
