@@ -16,8 +16,7 @@ library("lubridate")
 library("viridis")
 
 #read in data
-#setwd("~/GitHub/transect/data")
-transect<- read.csv("data/transecct_data_2.csv", header= T)
+transect<- read.csv("data/transect_data.csv", header= T)
 
 #create year, month, day columns
 transect$date<-mdy(transect$date)
@@ -105,7 +104,7 @@ dta3=merge(dta,dta2.2,by=c("day","month","year","Season","treatment","locality",
 
 sort.dta3<-dta3[order(dta3$year, dta3$month, dta3$station),]
 #just write this out so people can see it
-write.table(sort.dta3,file="data_output/merged_data.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(sort.dta3,file="data/archive/merged_data.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 
@@ -141,7 +140,7 @@ sumstats = function(x){
 stat_overall = sumstats(dta3$density)
 round_stat_overall=lapply(stat_overall,round,2)
 #write summary stats
-write.table(round_stat_overall,file="data_output/stat_overall.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(round_stat_overall,file="data/archive/density_stat_overall.txt", sep = ",", quote = FALSE, row.names = F)
 
 #below are different summarys by year etc
 
@@ -175,7 +174,7 @@ loc_mnth_yr<-dta2 %>%
   group_by(locality,year,month) %>%
   summarise(total.count=n())
 names(loc_mnth_yr) <- c("locality", "year", "month","number_transects")
-write.table(loc_mnth_yr,file="data_output/loc_mnth_yr.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(loc_mnth_yr,file="data/archive/loc_mnth_yr.txt", sep = ",", quote = FALSE, row.names = F)
 
 #after collapse of transects 
 #(collapse = combining multiple transects on a reef into one by summing length and count)
@@ -183,7 +182,7 @@ loc_mnth_yr<-dta3 %>%
   group_by(locality,year,month) %>%
   summarise(total.count=n())
 names(loc_mnth_yr) <- c("locality", "year", "month","number_transects")
-write.table(loc_mnth_yr,file="data_output/loc_mnth_yr_collapsed.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(loc_mnth_yr,file="data/archive/loc_mnth_yr_collapsed.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 #Counting the observations of each station per year, 
@@ -195,14 +194,14 @@ station_yr<-dta2 %>%
   group_by(year,station) %>%
   summarise(total.count=n()) 
 names(station_yr) <- c("year", "station","number_transects")
-write.table(station_yr,file="data_output/station_yr.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(station_yr,file="data/archive/station_yr.txt", sep = ",", quote = FALSE, row.names = F)
 
 #Counting the observations of each station, these are specific reefs
 station_n<-dta3 %>%
   group_by(station) %>%
   summarise(total.count=n()) 
 names(station_n) <- c("station","number_transects")
-write.table(station_n,file="data_output/station_n.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(station_n,file="data/archive/station_n.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 
@@ -277,15 +276,15 @@ LC <- dta3[dta3$locality == "LC",]
 stat_lc=sumstats(LC$tran_length)
 round_stat_lc=lapply(stat_lc,round,2)
 #write summary stats
-write.table(round_stat_lc,file="data_output/stat_lc.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(round_stat_lc,file="data/archive/stat_lc.txt", sep = ",", quote = FALSE, row.names = F)
 
 #LC rock density summary
 lc_rocks<-LC[LC$treatment == "rocks",]
-write.table(lc_rocks,file="data_output/lc_rocks.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(lc_rocks,file="data/archive/lc_rocks.txt", sep = ",", quote = FALSE, row.names = F)
 
 stat_lc_rocks<-sumstats(lc_rocks$density)
 round_stat_lc_rocks=lapply(stat_lc_rocks,round,2)
-write.table(round_stat_lc_rocks,file="data_output/stat_lc_rocks.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(round_stat_lc_rocks,file="data/archive/stat_lc_rocks.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 #LC control density summary
@@ -293,7 +292,7 @@ lc_control<-LC[LC$treatment == "control",]
 stat_lc_control<-sumstats(lc_control$density)
 round_stat_lc_control=lapply(stat_lc_control,round,2)
 
-write.table(round_stat_lc_control,file="data_output/stat_lc_control.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(round_stat_lc_control,file="data/archive/stat_lc_control.txt", sep = ",", quote = FALSE, row.names = F)
 
 #number of oysters
 boxplot(LC$count_live, ylab = "Oyster Live Counts", main = "Oyster Live Counts Overall")
