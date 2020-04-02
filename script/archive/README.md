@@ -12,3 +12,5 @@ This is the `archive` folder. This folder contains:
 - `oyster_functions_summary_test.R` - this R code is a test for the `oyster_functions.R`  
 - `period_20_transect_summary.R` - this R code produces a summary of period 20 transect data  
 - `predicted_code.R` - requires `mods1` to run this function  
+- `glm_models_20181001.R` - this R code runs glm models  
+- `summary_script.R`- this R code produces summary statistics and figures for transect data  
