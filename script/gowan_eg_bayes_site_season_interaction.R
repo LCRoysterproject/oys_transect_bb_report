@@ -21,7 +21,7 @@ n.seasons = length(unique(season))
 # Site additive across seasons
 
 #set up model object
-jags=jags.model('negbin_season+site.txt',
+jags=jags.model('jags_txt/negbin_season+site.txt',
                 data=list('Y'=LC,'site'=site,'season'=season,'tran_length'=tran_length,
                           'n.sites'=n.sites,'n.seasons'=n.seasons,'N'=N),
                 n.chains=4,n.adapt=1000)
@@ -53,7 +53,7 @@ cbind(bayes,mle)
 # Site interactive with season (different site effects in different seasons)
 
 #set up model object
-jags=jags.model('negbin_seasonXsite.txt',
+jags=jags.model('jags_txt/negbin_seasonXsite.txt',
                 data=list('Y'=LC,'site'=site,'season'=season,'tran_length'=tran_length,
                           'n.sites'=n.sites,'n.seasons'=n.seasons,'N'=N),
                 n.chains=4,n.adapt=1000)
