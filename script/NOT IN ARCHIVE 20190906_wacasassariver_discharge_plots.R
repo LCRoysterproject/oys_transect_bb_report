@@ -13,7 +13,7 @@ rm(list=ls());gc();
 
 library("zoo")
 
-dis <- read.csv("data/WaccasassaRiverDischarge.csv", header = T)
+dis <- read.csv("data/waccasassa_river_discharge.csv", header = T)
 
 #get some date components
 dis$Date <- as.Date(dis$Date, "%m/%d/%Y")
