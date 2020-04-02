@@ -10,7 +10,7 @@ library("lubridate") #format dates
 #read in data
 #transect production file
 #could change this to read directly from excel workbook
-tr <- read.csv("data/transect_data_production.csv", header = T)
+tr <- read.csv("data/transect_data.csv", header = T)
 
 #format date column as a date object
 tr$date<-mdy(tr$date)
