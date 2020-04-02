@@ -10,11 +10,11 @@
 #Southeast Georgia
 #North Florida
 
-gdi <- read.csv("data/GeorgiaDroughtIndex.csv", header = T)
+gdi <- read.csv("data/georgia_drought_index.csv", header = T)
 #georgia
 #column PDSI 
 #data is monthly from January 2010 to July 2019 (column YearMonth)
-fdi <- read.csv("data/FloridaDroughtIndex.csv", header = T)
+fdi <- read.csv("data/florida_drought_index.csv", header = T)
 #florida
 
 #create a Date column from the column YearMonth 
@@ -40,7 +40,7 @@ legend("topleft", legend = c("North Florida", "Southeast Georgia"), col = c("red
 
 #Sea Level Trends
 #Cedar Key, Florida 8727520
-sl <- read.csv("data/sealeveltrend.csv", header = T)
+sl <- read.csv("data/sea_level_trend.csv", header = T)
 #Monthly_MSL - monthly mean sea level
 #create date column
 #have to add day - so just 01 for every month
