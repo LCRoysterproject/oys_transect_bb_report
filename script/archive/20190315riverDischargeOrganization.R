@@ -72,4 +72,4 @@ dta3$mon_dis_lag_sc <- dta3$mon_dis_lag/max(dta3$mon_dis_lag)
 dta3$mon_dis_lag2_sc <- dta3$mon_dis_lag2/max(dta3$mon_dis_lag2)
 dta3$mon_dis_lag3_sc <- dta3$mon_dis_lag3/max(dta3$mon_dis_lag3)
 
-write.csv(dta3, "data/finalTransectData_River.csv")
+write.csv(dta3, "data/final_transect_data_river.csv")
