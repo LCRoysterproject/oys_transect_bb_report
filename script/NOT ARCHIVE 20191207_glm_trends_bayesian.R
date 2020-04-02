@@ -1,11 +1,11 @@
 rm(list=ls(all=TRUE))
-library('rjags')
+library(rjags)
 library(MASS)
 library(lme4)
 
 #read in data
-d <- read.csv('data/transect_data_production.csv',header=T)
-source('script/OysterFunctions.R')
+d <- read.csv("data/transect_data.csv",header=T)
+source("script/oyster_functions.R")
 d2 <- organizeData(d)
 d3 <- calculateCountsDensity(d,d2)
 
@@ -26,7 +26,7 @@ N = nrow(d3) #sample size
 # Locality and site as categorical covariates, fixed effects
 
 #set up model object
-jags=jags.model('script/negbin_periodRE_localitysiteFE.txt',
+jags=jags.model("script/jags_txt/negbin_periodRE_localitysiteFE.txt",
                 data=list('Y'=LC,'site'=site,'locality'=locality,'period'=period,'tran_length'=tran_length,
                           'n.sites'=n.sites,'n.localities'=n.localities,'n.periods'=n.periods,'N'=N),
                 n.chains=4,n.adapt=1000)
@@ -87,7 +87,7 @@ n.periods = length(unique(period)) #number of periods
 
 
 #set up model object
-jags=jags.model('script/nmixmodel_doublepassdet_periodRE_localitysiteFE.txt',
+jags=jags.model("script/jags_txt/nmixmodel_doublepassdet_periodRE_localitysiteFE.txt",
                 data=list('C'=C,'J'=J,'M'=M,'site'=site,'locality'=locality,'period'=period,'tran_length'=tran_length,
                           'n.sites'=n.sites,'n.localities'=n.localities,'n.periods'=n.periods),
                 n.chains=8,n.adapt=1000)
