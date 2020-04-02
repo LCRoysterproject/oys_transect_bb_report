@@ -1,4 +1,3 @@
-#Feb 5 2019
 #this is reading in a data file that has been processed
 #including calculating density and assigning the strata used in 2018-2019
 #will need to go back and create strata for all the old sites too (non 2018-2019)
@@ -8,7 +7,7 @@ library("ggplot2")
 library("lubridate")
 library("viridis")
 
-data1<- read.csv("LC_transect_data_2010_2019.csv", header= T)
+data1<- read.csv("data/archive/2018_2019_winter_only_transect_data.csv", header= T)
 
 
 ########
@@ -138,28 +137,28 @@ ggplot(z, aes(period, total_tran_length))+
 
 
 
-write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 #n collapsed transect sampled by strata
 zz<-data1 %>%
   group_by(strata) %>%
   summarise(number_collapsed_trans=n())
-write.table(zz,file="data_output/n_tran_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(zz,file="data_output/n_tran_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 #mean length of each collapsed transect in each strata
 zzz<-data1 %>%
   group_by(strata) %>%
   summarise(mean_tran_length=round(mean(tran_length),2))
-write.table(zzz,file="data_output/mean_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(zzz,file="data_output/mean_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 #mean length of each collapsed transect in each strata
 zzzz<-data1 %>%
   group_by(strata) %>%
   summarise(var_tran_length=round(var(tran_length),2))
-write.table(zzzz,file="data_output/var_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(zzzz,file="data_output/var_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 
