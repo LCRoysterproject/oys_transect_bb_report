@@ -1,4 +1,3 @@
-#Feb 6 2019
 #this is reading in a data file that has been processed
 #including calculating density and assigning the strata used in 2018-2019
 
@@ -85,27 +84,12 @@ z<-cbind(df.strata.stats[1],round_df.strata.stats[1:12])
 ###################
 
 
-##here is a summary table to match the white board totals by strata
-dtax=aggregate(count_live~day+month+year+season+treatment+locality+site+bar+station+transect,data=dta0,sum)
-st <- read.csv("data/strata.csv", header = T)
-for(i in 1:nrow(dtax)){
-  station <- as.character(dtax$station[i])
-  print(station)
-  strata <- as.character(st$strata[st$station == station])
-  print(strata)
-  ifelse(length(strata) == 0, dtax$strata[i] <- NA, dtax$strata[i] <- strata)
-}
-
-whiteboard<-table(dtax$strata)
-# write.table(whiteboard,file="data_output/whiteboard.txt", sep = ",", quote = FALSE, row.names = F)
-
-
 #summing length of transect sampled by strata
 tran_length<-data1 %>%
   group_by(strata) %>%
   summarise(total_tran_length=sum(tran_length))
 names(tran_length) <- c("strata","total tran length sampled")
-# write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(tran_length,file="data_output/tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 #n collapsed transect sampled by strata
@@ -217,6 +201,65 @@ hist(data1$density[data1$locality == "LC"], xlab = "Density", main = "Oyster Den
 hist(data1$density[data1$locality == "LT"], xlab = "Density", main = "Oyster Density Histogram at Locality LT")
 hist(data1$density[data1$locality == "NN"], xlab = "Density", main = "Oyster Density Histogram at Locality NN")
 
+#boxplot by strata of density
+
+ggplot(data1, aes(strata, density))+
+  geom_boxplot()+ coord_flip()+
+  labs(title = "Oyster density by strata")+
+  xlab("Strata") +
+  ylab ("Oyster density per m^2")
+
+#dotplot strata and station
+ggplot(data1, aes(density, station, shape=strata, colour=strata))+
+  geom_point(size=3)+
+  labs(title = "Oyster density by station and strata")+
+  ylab("Station") +
+  xlab ("Oyster density per m^2")
+
+
+#histogram of density
+ggplot(data1, aes(density))+
+  labs(title = "Frequency histogram of oyster density")+
+  geom_histogram(bins=20)+
+  facet_wrap(~strata)+
+  theme_bw()+
+  ylab("Frequency") +
+  xlab ("Oyster density per m^2")+
+  ylim(c(0,5))
+
+
+#let's go back and take a look at lengths of all transects
+#this is looking at max so it looks at the max length, and not the segments, s
+
+hist(data1$tran_length)
+
+ggplot(data1, aes(tran_length))+
+  labs(title = "Histogram of collapsed transect length")+
+  geom_histogram(bins=20)+
+  facet_wrap(~locality)+
+  theme_bw()+
+  ylab("Frequency") +
+  xlab ("Length of collapsed transects")+
+  ylim(c(0,15))
+
+# #mean length of each collapsed transect in each strata
+# aaa<-dtax %>%
+#   group_by(station) %>%
+#   summarise(mean_tran_length=mean(tran_length))
+
+
+#histogram collapsed transect lengths
+
+hist(data1$tran_length)
+
+ggplot(data1, aes(tran_length))+
+  labs(title = "Histogram of collapsed transect length")+
+  geom_histogram(bins=20)+
+  facet_wrap(~strata)+
+  theme_bw()+
+  ylab("Frequency") +
+  xlab ("Length of collapsed transects")+
+  ylim(c(0,5))
 
 # 
 # ## winter 2018-2019 comparison between different sites
