@@ -7,7 +7,7 @@ library("reshape")
 library("ggplot2")
 library("lubridate")
 
-dta3 <- read.csv("data/transect_data_allepochs.csv", header = T)
+dta3 <- read.csv("data/archive/transect_data_all_epochs.csv", header = T)
 
 #data aggregated for each transect
 #created in 20190315_Oyster_transects_DataMgmt_production.R
