@@ -1,7 +1,7 @@
 
-source('script/OysterFunctions.R')
+source("script/oyster_functions.R")
 
-data <- read.csv('data/transect_data_production.csv', header = T)
+data <- read.csv("data/transect_data.csv", header = T)
 
 #organize data 
 data2 <- organizeData(data)
