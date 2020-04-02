@@ -1,2 +1,1 @@
-# oys_transect_bb_report
-The report and imperative summaries of the LCR oyster project transect data.
+This is the `writing` folder. It includes all writing for the oyster project transect report.
