@@ -20,7 +20,7 @@ library("lubridate") #format dates
 #read in data
 #transect production file
 #could change this to read directly from excel workbook
-tr <- read.csv("data/transect_data_production.csv", header = T)
+tr <- read.csv("data/transect_data.csv", header = T)
 
 #format date column as a date object
 tr$date<-mdy(tr$date)
@@ -140,7 +140,7 @@ dta3$area <- round(dta3$area,digits=2)
 dta3$density <- round(dta3$density,digits=2)
 
 #read in strata file
-st <- read.csv("data/strata.csv", header = T)
+st <- read.csv("data/archive/strata.csv", header = T)
 #attach strata data to final file
 for(i in 1:nrow(dta3)){
   station <- as.character(dta3$station[i])
@@ -154,12 +154,12 @@ sort.dta3<-dta3[order(dta3$period),]
 
 
 #write cleaned production file to .csv
-write.csv(sort.dta3,file="data/LC_transect_data_2010_2019.csv")
+write.csv(sort.dta3,file="data/all_epoch_transect_data.csv")
 
 ###
 ##here is a summary table to match the white board totals by strata
 dtax=aggregate(count_live~day+month+year+season+treatment+locality+site+bar+station+transect,data=dta0,sum)
-st <- read.csv("data/strata.csv", header = T)
+st <- read.csv("data/archive/strata.csv", header = T)
 for(i in 1:nrow(dtax)){
   station <- as.character(dtax$station[i])
   print(station)
