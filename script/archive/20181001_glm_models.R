@@ -41,7 +41,7 @@ dta=aggregate(count_live~day+month+year+Season+treatment+locality+site+bar+stati
 # max has to be used because transect length records the "segments" 2.5, 5, up to the max length
 # so if you sum this then you end up with the wrong total length of transect 
 
-dta2=aggregate(tran_length~day+month+year+Season+treatment+locality+site+bar+station+replicate,data=transect2,max)
+dta2=aggregate(tran_length~day+month+year+Season+treatment+locality+site+bar+station,data=transect2,max)
 
 #so by including replicate in dta2 it determines maximum length of each transect when multiple 
 #transects done on a bar.
