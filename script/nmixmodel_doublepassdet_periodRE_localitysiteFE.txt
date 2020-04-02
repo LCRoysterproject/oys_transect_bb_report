@@ -1,0 +1,43 @@
+model{
+    #priors
+    beta0 ~ dnorm(0,1/100) #overall mean (intercept) for abundance
+    betap ~ dunif(0,5) #detection probability
+    sigma ~ dunif(0,10) #standard deviation of random effect
+      tau <- pow(sigma, -2) #convert standard deviation to precision
+    for(i in 1:n.periods){ #random effect for period (periods drawn from normal distribution)
+      alpha[i] ~ dnorm(0, tau)
+    }
+    for(i in 1:n.localities){ # locality effects
+      betaL[i] ~ dnorm(0,1/100)
+    }
+    for(i in 1:n.sites){ #site effects
+      betaS[i] ~ dnorm(0,1/100)
+    }
+    r ~ dunif(0, 50) #prior for negbin overdispersion
+    
+    
+    #biological model for true abundance
+    for (i in 1:M){
+        #response variable
+        N[i] ~ dnegbin(p[i],r)
+        
+        #transform lambda into p
+        p[i] <- r/(r + lambda[i])
+        
+        #tranform mu into lambda
+        log(lambda[i]) <- mu[i] 
+        
+        #live count = intercept+season+site+offset(tran_length) + random time effect
+        mu[i] <- beta0+betaL[locality[i]]+betaS[site[i]]+log(tran_length[i])+alpha[period[i]]
+        
+        #observation model for replicated counts
+          for(j in 1:J){
+            #response variable
+            C[i,j] ~ dpois(lambda.d[i,j])
+            lambda.d[i,j] <- betap*N[i]
+          }
+    }
+    
+    #derived quantities
+    totalN <- sum(N[]) #total population size across all sites
+}

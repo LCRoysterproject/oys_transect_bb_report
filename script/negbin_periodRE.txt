@@ -1,0 +1,24 @@
+model{
+    #priors
+    beta0 ~ dnorm(0,1/100) #prior for overall mean (intercept)
+    sigma ~ dunif(0, 10)   # Prior for standard deviation of random effect
+      tau <- pow(sigma, -2) #convert standard deviation to precision
+    for(i in 1:n.periods){ #random effect for period (periods drawn from normal distribution)
+      alpha[i] ~ dnorm(0, tau)
+    }
+    r ~ dunif(0, 50) #prior for negbin overdispersion
+    
+    for (i in 1:N){
+        #response variable
+        Y[i] ~ dnegbin(p[i],r)
+        
+        #transform lambda into p
+        p[i] <- r/(r + lambda[i])
+        
+        #tranform mu into lambda
+        log(lambda[i]) <- mu[i] 
+        
+        #live count = intercept + offset(tran_length) + random time effect
+        mu[i] <- beta0 + log(tran_length[i]) + alpha[period[i]]
+    }
+}

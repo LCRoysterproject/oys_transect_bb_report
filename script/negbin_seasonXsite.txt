@@ -1,0 +1,23 @@
+model{
+    #priors
+    for(i in 1:n.seasons){ # for each season
+      for(j in 1:n.sites){ #for each season
+        beta[i,j] ~ dnorm(0,1/100)
+      }
+    }
+    r ~ dunif(0, 50) #prior for negbin overdispersion
+    
+    for (i in 1:N){
+        #response variable
+        Y[i] ~ dnegbin(p[i],r)
+        
+        #transform lambda into p
+        p[i] <- r/(r + lambda[i])
+        
+        #tranform mu into lambda
+        log(lambda[i]) <- mu[i] 
+        
+        #live count
+        mu[i] <- beta[season[i],site[i]] + log(tran_length[i])
+    }
+}

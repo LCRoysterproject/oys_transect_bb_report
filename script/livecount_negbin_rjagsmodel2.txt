@@ -1,0 +1,23 @@
+model{
+    #priors
+    beta0 ~ dnorm(4.7046,0.2971)
+    betaS[1] <- 0 #reference category
+    betaS[2] ~ dnorm(-0.8444, 0.3894)
+    betaS[3] ~ dnorm(-1.2747, 0.4210)
+    
+    r ~ dunif(0, 50)
+    
+    for (i in 1:N){
+        #response variable
+        Y[i] ~ dnegbin(p[i],r)
+        
+        #transform lambda into p
+        p[i] <- r/(r + lambda[i])
+        
+        #tranform mu into lambda
+        log(lambda[i]) <- mu[i] 
+        
+        #live count = intercept + site + offset(tran_length)
+        mu[i] <- beta0 + betaS[site[i]] + log(tran_length[i])
+    }
+}

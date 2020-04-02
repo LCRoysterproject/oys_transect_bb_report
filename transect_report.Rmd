@@ -1,0 +1,356 @@
+---
+title: "Transect Report"
+author: ""
+date: ""
+output: 
+  pdf_document
+  
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, messages= FALSE, warning= FALSE, fig.width = 7, fig.height=7)
+knitr::opts_knit$set(root.dir=normalizePath('../'),fig.align="center")
+#devtools::install_github("haozhu233/kableExtra")
+
+options(scipen=999, digits=2)
+
+library("lubridate")
+library("ggplot2")
+library("dplyr")
+library("viridis")
+library("tidyverse")
+library("scales")
+library("waterData")
+library("gridExtra")
+library("cowplot")
+library('ggpubr')
+
+#sourcing the function
+source("OysterFunctions.R")
+```
+
+```{r organize, include= FALSE}
+data <- read.csv("data//transect_data_production.csv", header= TRUE)
+org_data <- organizeData(data)
+cal_den<- calculateCountsDensity(data,org_data)
+
+### days sampled for all time
+total_days <- length(unique(org_data$date))
+
+total_days_20 <- length(unique(org_data$date[org_data$date > "2019-08-01"]))
+```
+
+# Overview
+This report provides summary statistics and figures for ongoing transect sampling. The first section of the report focuses on the current sampling (Winter 2019-2020) and how the collected data compare to last year's sampling (Winter 2018-2019). So far `r total_days_20` days have been sampled this season. The second half of the report gives summaries of all of the data that have been collected since the beginning of the project (`r head(org_data$date, 1)`). In total, `r total_days` days have been sampled over this entire project. 
+
+## Definition of Localities
+\begingroup\Large
+| LOCALITY | LOCATION        |  
+|:---------|----------------:|
+| BT       | Big Trout       |   
+| CK       | Cedar Key       |  
+| CR       | Corrigan's Reef | 
+| HB       | Horseshoe Beach | 
+| LC       | Lone Cabbage    | 
+| LT       | Little Trout    |  
+| NN       | No Name         | 
+\endgroup
+
+
+## Definition of Strata
+\begingroup\Large
+| STRATA  | DEFINITION              |  
+|:--------|------------------------:|
+| Y_NA    | Harvest, No Rock        |   
+| Y_SM    | Harvest, Small Rock     |  
+| N_NA    | No Harvest, No Rock     | 
+| N_SM    | No Harvest, Small Rock  | 
+| N_LG    | No Harvest, Large Rock  | 
+| N_PILOT | No Harvest, Pilot Rocks |  
+\endgroup
+
+
+\newpage
+
+# Current Sampling
+Here, we provide a progress bar showing how much of the sampling has been completed for this season, plus summary tables and plots comparing live counts and density of oysters between this current season and last year. **The current sampling period is period 20, and last year's sampling period is period 18.** 
+
+```{r progress_bar, echo=FALSE,comment=NA, fig.width = 7, fig.height = 6}
+progress(org_data)
+```
+
+\newpage
+
+## Summary Tables for Periods 18 and 20
+These summary tables provide summary statistics on live counts and oyster densities for just periods **18 (Winter 2018-2019) and 20 (Winter 2019-2020).**   
+
+Summary statistics include:    
+- Locality  or Strata or Period 
+- Mean  
+- Median  
+- Standard Deviation (SD)  
+- Variance (Var)  
+- Coefficient of variation (CV)  
+- Standard Error (SE)  
+- Lower 95% Confidence Interval assuming normal distribution (L95)  
+- Upper 95% Confidence Interval assuming normal distribution (U95)  
+- Bootstrap Mean (Bstrap Mean)  
+- Lower 95% Confidence Interval from Bootstrap Values (L95 Bstrap)  
+- Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap) 
+
+```{r 1820_tables, echo = FALSE, comment = NA}
+p1820 <- subset(cal_den, cal_den$period == 18 | cal_den$period == 20)
+options(width = 100) #used to make the page size "larger" in rmd to fit all the data from the tables
+
+summaryCounts(p1820)
+summaryDensity(p1820)
+```
+\newpage
+## Summary Plots for Periods 18 and 20
+  
+```{r 1820_local, echo=FALSE,comment=NA}
+cal_den %>% 
+  filter(period== 18 | period==20) %>% 
+  ggplot( aes( x= locality, y= density, fill=as.factor(period))) +
+  geom_boxplot()+ coord_flip()+
+  ylab("Oyster density per m^2")+
+  xlab("Locality")+
+  labs(title= "Oyster Density by Locality for Periods 18 and 20", fill= "Period") +
+  scale_fill_discrete(breaks=c("20","18"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+
+```
+Figure- Calculated oyster density by locality for periods 18 (Winter 2018-2019) and 20 (Winter 2019-2020) with the last sample date of period 20 as `r tail(org_data$date, 1)`.
+\newpage
+
+```{r 1820_strata,echo=FALSE,comment=NA }
+cal_den %>% 
+  filter(period== 18 | period==20) %>% 
+  ggplot( aes( x= strata, y= density, fill=as.factor(period))) +
+  geom_boxplot()+ coord_flip()+
+  ylab("Oyster density per m^2")+
+  xlab("Strata")+
+  labs(title= "Oyster Density by Strata for Periods 18 and 20", fill= "Period") +
+  scale_fill_discrete(breaks=c("20","18"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+```
+Figure- Calculated oyster density by strata for periods 18 (Winter 2018-2019) and 20 (Winter 2019-2020) with the last sample date of period 20 as `r tail(org_data$date, 1)`.
+\newpage
+
+The following summary plot is calcualted in R using the `geom_density` (https://ggplot2.tidyverse.org/reference/geom_density.html) statistical function in `ggplot`. The `geom_density` function computes and draws kernel density estimates, which is then represented as a smoothed version of a histogram. 
+  
+    
+```{r den_plot, echo=FALSE, comment=NA, error= FALSE}
+cal_den %>% 
+  filter(period== 18 | period==20) %>% 
+ggplot(aes(x=density, fill = as.factor(period))) +
+          geom_density(size = 1.5, alpha = 0.5)+
+          xlab("Density")+
+          ylab("Probability Density Function")+
+          labs(title = "Oyster Density by Period", fill = "Period")+
+          scale_fill_manual(values=c("#E69F00", "#56B4E9"))+
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+
+```
+Figure- Calculated oyster density by periods 18 (Winter 2018-2019) and 20 (Winter 2019-2020) using a probability density function with the last sample date of period 20 as `r tail(org_data$date, 1)`.
+\newpage
+
+# Sampling for all Periods
+Next, we provide summary tables and plots for all transect sampling. These data were collected between `r head(org_data$date, 1)` and `r tail(org_data$date, 1)`. 
+
+## Definitions of Periods
+  
+
+\begingroup\Large
+  
+    
+| PERIOD  | SEASON  | YEAR       |
+|:--------|:-------:|-----------:|
+| 1       | Summer  | 2010       |  
+| 2       | Winter  | 2010-2011  |  
+| 3       | Summer  | 2011       | 
+| 4       | Winter  | 2011-2012  |  
+| 5       | Summer  | 2012       |
+| 6       | Winter  | 2012-2013  | 
+| 7       | Summer  | 2013       |
+| 8       | Winter  | 2013-2014  |  
+| 9       | Summer  | 2014       |  
+| 10      | Winter  | 2014-2015  |  
+| 11      | Summer  | 2015       |
+| 12      | Winter  | 2015-2016  | 
+| 13      | Summer  | 2016       | 
+| 14      | Winter  | 2016-2017  |  
+| 15      | Summer  | 2017       |
+| 16      | Winter  | 2017-2018  | 
+| 17      | Summer  | 2018       |
+| 18      | Winter  | 2018-2019  |  
+| 19      | Summer  | 2019       |
+| 20      | Winter  | 2019-2020  | 
+\endgroup
+
+\newpage
+
+## Summary of Effort for all Periods
+These effort summaries show the total number of transects and total number of meters walked per locality, strata, locality per period, and strata per period. **These tables contain all data collected on the transects.**  
+
+```{r effort, echo=FALSE, comment=NA, size= 10}
+summaryEffort(cal_den)
+```
+\newpage
+## Effort Plot Summaries for all Periods
+```{r effort_plot,echo=FALSE, comment=NA}
+effortPlot(cal_den)
+```
+\newpage
+
+## Summary Tables for all Periods 
+These summaries display summary statistics of live oysters by locality, strata, and period. These contain all data collected on the oyster transects.  
+  
+The summary statistics include:  
+- Locality or Strata or Period
+- Mean  
+- Median  
+- Standard Deviation (SD)  
+- Variance (Var)  
+- Coefficient of variation (CV)  
+- Standard Error (SE)  
+- Lower 95% Confidence Interval assuming normal distribution (L95)  
+- Upper 95% Confidence Interval assuming normal distribution (U95)  
+- Bootstrap Mean (Bstrap Mean)  
+- Lower 95% Confidence Interval from Bootstrap Values (L95 Bstrap)  
+- Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap)  
+  
+
+### Live Count Statistics for all Periods
+```{r counts, echo=FALSE, comment=NA}
+options(width = 100)
+summaryCounts(cal_den)
+```
+
+\newpage
+
+### Density Statistics for all Periods
+```{r density_tables, echo=FALSE, comment=NA}
+options(width = 100)
+summaryDensity(cal_den)
+```
+
+## Summary Density Plots for all Periods
+```{r plots, echo=FALSE, fig.height = 10}
+plotsDensity(cal_den)
+```
+\newpage
+
+## Summary Plots for Pilot Study Sites
+A subset of the oyster transect locations were sampled over time for a pilot study. Here we provide plots of live oyster counts and density for these pilot stations with Lone Cabbage (LCO10B, LCO11A, LCO8B, LCO9A).  
+
+```{r pilot_sites, echo=FALSE,comment=NA}
+pilotSites(cal_den)
+```
+\newpage
+
+## River Discharge Quartile Plots  
+```{r river_discharge, echo=FALSE,comment=NA, fig.width= 7, fig.height= 8}
+
+#station to analyze
+station = '02358000'   
+#get site name to use in plot titles and such
+stinfo  = siteInfo(station)
+
+#read entire time series
+# dis   = importDVs(staid=station,code='00060',stat='00003', sdate= "1950-01-01")
+
+# importDVs is slow when it needed to pull so much data. So here's some code to dynamically update
+# and store the data (TODO: write a wrapper function for it)
+# Also using RDS format instead of CSV here. RDS is an R data file format that
+# stores also datatype so dis$dates already is Date object when you read the file..
+dis <- read_rds("data/dis1.rds")
+if (max(dis$dates) < (Sys.Date() - 5)) {
+  sdate <- max(dis$dates) + 1
+  newdis <- importDVs(staid = station, code = '00060', stat = '00003', sdate= as.character(sdate))
+  dis <- bind_rows(dis, newdis) %>%
+    distinct() # In case there's repeated rows due to code failure
+  write_rds(dis, "data/dis1.rds")
+}
+
+# Since dis$dates is already Date object, no action requires for dates column
+
+# Remove leap days
+dis_noleap <- dis %>%
+  filter(!(month(dates) == 2 & day(dates) == 29))
+
+# Calculate 0%, 25%, 50%, 75% and 100% quantile for each day
+# dplyr and tidyr involve here
+dis_quant <- dis_noleap %>%
+  mutate(md = strftime(dates, format = "%m-%d")) %>%
+  group_by(md) %>%
+  summarise(quan0 = quantile(val, 0, na.rm=TRUE),
+            quan25 = quantile(val, 0.25, na.rm=TRUE),
+            quan50 = quantile(val, 0.50, na.rm=TRUE),
+            quan75 = quantile(val, 0.75, na.rm=TRUE),
+            quan100 = quantile(val, 1, na.rm=TRUE)) %>%
+  gather("quantile", "val", -md)
+
+# Remove the "quan" and set the quantile column to factor of 5 levels
+# Note that the levels are on descending order because this force ggplot
+# to plot quantile 100, then overlay quantile 75 on top of it, so on and
+# so forth, i.e. quantile 100 won't cover other quantiles up.
+dis_quant$quantile <- str_remove(dis_quant$quantile, "quan") %>%
+  factor(levels = c("100", "75", "50", "25", "0"))
+
+minValues <- dis_quant$val[dis_quant$quantile == '0']
+dis_quant$min <- minValues
+
+dis_quant1 <- subset(dis_quant, dis_quant$quantile != '0')
+# To use cowplot, each plot needs to be created separely. Facet wrap can creat a publication label at the top left
+
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2")
+plot_list = list()
+
+#year= 2010:2019
+
+for (i in 1:10) { # Loop over loop.vector
+  
+# Year of interest, keep this at the current year
+yoi = i + 2009
+
+# Add year to dis_quant's date for plotting purpose
+dis_quant2 <- dis_quant1 %>%
+  mutate(dates = paste(yoi, md, sep="-") %>% as.Date)
+
+dis_yoi <- dis_noleap %>%
+  filter(year(dates) == yoi)
+
+rd_plot<-ggplot(dis_yoi, aes(x=dates, y=val)) +
+  xlab("Month")+
+  ylab("River \n Discharge (cfs)") +
+  labs(title= yoi ,fill= "Quantile") +
+  geom_ribbon(data = dis_quant2, aes(x=dates, ymax=val, ymin=min, fill=quantile)) +
+  geom_line(size=1.1) +
+  scale_fill_manual(values=cbPalette) +
+  scale_x_date(labels = date_format("%b"))+
+  theme_minimal() +
+  theme(legend.position = "right", panel.border = element_rect(colour = "black", fill=NA, size=1))
+
+plot_list[[i]]= rd_plot
+
+}
+
+ggarrange(plotlist=plot_list, common.legend = TRUE, ncol = 2, nrow = 5, legend = 'bottom')
+
+```
+Figure- Water discharge data are provided by the R package `waterData`. River discharge data are measured at USGS gauge 02323500 (Wilcox) Florida as mean daily discharge in cubic feet per second (by convention) in the black line. Quartiles are represented 0-25, 25-50, 50-75, and 75-100. 
+
+\newpage
+### Latest Data Entered 
+Displayed are the entries for the last date of sampling (`r tail(org_data$date, 1)`).   
+```{r latest_data, echo=FALSE, comment=NA }
+latest_obs<- org_data  %>% 
+  filter(date == max(date)) %>% 
+  select(date, station,tran_length,count_live, count_dead, treatment, strata)
+print(latest_obs, row.names = FALSE)
+     
+```
+
