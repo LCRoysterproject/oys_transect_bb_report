@@ -1,4 +1,4 @@
-d <- read.csv("data/transect_data_production.csv", header = T)
+d <- read.csv("data/transect_data.csv", header = T)
 d2 <- organizeData(d)
 d3 <- calculateCountsDensity(d, d2)
 p20 <- subset(d3, d3$period == 20)
