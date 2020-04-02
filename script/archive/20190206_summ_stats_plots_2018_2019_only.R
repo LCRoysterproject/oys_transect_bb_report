@@ -13,7 +13,7 @@ data1<- read.csv("data/archive/2018_2019_winter_only_transect_data.csv", header=
 
 
 #round_data_overall=lapply(data1&density,round,2)
-write.table(data1,file="data_output/data1.txt", sep = ",", quote = FALSE, row.names = T)
+# write.table(data1,file="data_output/data1.txt", sep = ",", quote = FALSE, row.names = T)
 
 
 #summary statistics function
@@ -44,7 +44,7 @@ sumstats = function(x){
 stat_overall = sumstats(data1$density)
 round_stat_overall=lapply(stat_overall,round,2)
 #write summary stats
-write.table(round_stat_overall,file="data_output/stat_overall.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(round_stat_overall,file="data_output/stat_overall.txt", sep = ",", quote = FALSE, row.names = F)
 
 #below are different summarys by year etc
 
@@ -76,7 +76,7 @@ df.strata.stats<-ldply(stat_strata,data.frame)
 round_df.strata.stats=lapply(df.strata.stats[2:13],round,2)
 z<-cbind(df.strata.stats[1],round_df.strata.stats[1:12])
 #write summary stats
-write.table(z,file="data_output/round_dfstrata_stats.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(z,file="data_output/round_dfstrata_stats.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 
@@ -97,7 +97,7 @@ for(i in 1:nrow(dtax)){
 }
 
 whiteboard<-table(dtax$strata)
-write.table(whiteboard,file="data_output/whiteboard.txt", sep = ",", quote = FALSE, row.names = F)
+# write.table(whiteboard,file="data_output/whiteboard.txt", sep = ",", quote = FALSE, row.names = F)
 
 
 #summing length of transect sampled by strata
@@ -105,7 +105,7 @@ tran_length<-data1 %>%
   group_by(strata) %>%
   summarise(total_tran_length=sum(tran_length))
 names(tran_length) <- c("strata","total tran length sampled")
-write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 #n collapsed transect sampled by strata
@@ -114,20 +114,20 @@ write.table(z,file="data_output/sum_strata.txt", sep = ",", quote = FALSE, col.n
 tran_n<-data1 %>%
   group_by(strata) %>%
   dplyr::summarise(n_transects=n())
-write.table(tran_n,file="data_output/n_tran_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(tran_n,file="data_output/n_tran_strata.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 #mean length of each collapsed transect in each strata
 
 tran_mean<-data1 %>%
   group_by(strata) %>%
   summarise(mean_tran_length=round(mean(tran_length),2))
-write.table(tran_mean,file="data_output/mean_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(tran_mean,file="data_output/mean_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 #variance in length of each collapsed transect in each strata
 tran_var<-data1 %>%
   group_by(strata) %>%
   summarise(var_tran_length=round(var(tran_length),2))
-write.table(tran_var,file="data_output/var_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
+# write.table(tran_var,file="data_output/var_tran_length.txt", sep = ",", quote = FALSE, col.names = T,row.names=F)
 
 
 
