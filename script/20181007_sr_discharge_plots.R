@@ -27,7 +27,6 @@ graphics.off();windows(record=T)
 library("waterData")
 library("hydroTSM")
 library("zoo")
-#setwd("~/Git/transect/data")
 
 #station to analyze
 station = '02323500'   
