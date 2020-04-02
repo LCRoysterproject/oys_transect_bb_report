@@ -18,7 +18,7 @@ N = nrow(d3) #sample size
 # Period as categorical covariate, fixed effect
 
 #set up model object
-jags=jags.model('negbin_period.txt',
+jags=jags.model('jags_txt/negbin_period.txt',
                 data=list('Y'=LC,'period'=period,'tran_length'=tran_length,'n.periods'=n.periods,'N'=N),
                 n.chains=4,n.adapt=1000)
 
@@ -45,7 +45,7 @@ cbind(bayes,mle)
 # Period as categorical covariate, random effect
 
 #set up model object
-jags=jags.model('negbin_periodRE.txt',
+jags=jags.model('jags_txt/negbin_periodRE.txt',
                 data=list('Y'=LC,'period'=period,'tran_length'=tran_length,'n.periods'=n.periods,'N'=N),
                 n.chains=4,n.adapt=1000)
 
