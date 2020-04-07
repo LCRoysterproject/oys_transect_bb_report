@@ -1,2 +1,2 @@
 # oys_transect_bb_report
-The report and imperative summaries of the LCR oyster project transect data.
+The `oys_transect_bb_report` consists of scripts and data used for transect reporting.  
