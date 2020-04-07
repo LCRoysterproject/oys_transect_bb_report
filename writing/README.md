@@ -1,1 +1,1 @@
-This is the `writing` folder. It includes all writing for the oyster project transect report.
+This is the `writing` folder. It includes all writing documents for the oyster project transect report.
