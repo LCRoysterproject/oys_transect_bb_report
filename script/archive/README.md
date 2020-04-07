@@ -6,7 +6,7 @@ This is the `archive` folder. This folder contains:
 -`20190226_transect_report_test.R` - only located in the T:Drive 
 - `20190315riverDischargeOrganization.R` - this R code produces the file `final_transect_data_river.csv` file   
 - `summary_stats_figures_20190515.R` - this R code uses the `2018_2019_winter_only_transect_data.csv` and outputs `data1.txt` and several other variations of statistical transect tables  
-- `create_transect_data_clean.R` - this R code produces  `transect_data_cleans.csv` file    
+- `create_transect_data_clean.R` - this R code produces  `transect_data_clean.csv` file    
 - `create_epoch_3_transect_data.R` - this R code produces the `create_epoch_3_transect_data.csv` file  
 - `create_all_epoch_3_transect_data.R` - this R code produces the `create_all_epoch_3_transect_data.csv` file  
 - `oyster_functions_summary_test.R` - this R code is a test for the `oyster_functions.R`  
