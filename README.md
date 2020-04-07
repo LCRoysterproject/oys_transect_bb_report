@@ -1,2 +1,2 @@
 # oys_transect_bb_report
-The `oys_transect_bb_report` consists of scripts and data used for transect reporting.  
+ This is `oys_transect_bb_report` repository. This repository contains the code, data, and documents of the transect report.
