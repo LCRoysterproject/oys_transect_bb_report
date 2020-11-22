@@ -501,25 +501,41 @@ effortPlot<- function(data) {
 progress <- function(data){
   s <- subset(data, data$period == 20)
   f <- function(x){length(unique(x))}
-  s2 <- aggregate(transect ~ station+treatment, data = s, FUN = f)
-  s3 <- aggregate(transect ~ treatment, data = s2, FUN = 'sum')
+  s2 <- aggregate(transect ~ station+ strata, data = s, FUN = f)
+  s3 <- aggregate(transect ~ strata, data = s2, FUN = 'sum')
   
-  totalRocks <- 66
-  totalControl <- 40
+  Y_NA <- 19
+  N_NA <- 25
+  N_Y <- 53
+  Y_SM <- 72
   
-  rockBar <- (s3$transect[s3$treatment == "rocks"] / totalRocks) * 100
-  controlBar <- (s3$transect[s3$treatment == "control"] / totalControl) * 100
   
-  plot(c(0,100), c(0,2), type = 'n', xlab = 'Percentage Complete', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
+  #total rock is yy and yn
+  #yy= 72 sites
+  #yn= 19 sites 
+  #nn= 25 sites
+  #ny = 53 sites
+  
+  Y_NA_Bar <- ((s3$transect[s3$strata == "Y_NA"] / Y_NA) * 100)
+  N_NA_Bar <- (s3$transect[s3$strata == "N_NA"] / N_NA) * 100
+  N_Y_Bar <- ((s3$transect[s3$strata == "N_LG"] / N_Y) * 100) + ((s3$transect[s3$strata == "N_SM"] / N_Y) * 100)
+  Y_SM_Bar <- (s3$transect[s3$strata == "Y_SM"] / Y_SM) * 100
+  
+  plot(c(0,100), c(0,4), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
   #plot rock sites progress
   rect(0, 0.1+1-1, 100, 0.9+1-1)
-  rect(0, 0.1+1-1, rockBar, 0.9+1-1, col = 'blue')
-  text(40, 0.5+1-1, paste('Rock Sites: ', round(rockBar,2), '%', sep=''), adj = 0, col = 'black')
-  #plot controls ites progress
+  rect(0, 0.1+1-1, Y_NA_Bar, 0.9+1-1, col = 'blue')
+  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_NA_Bar), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+2-1, 100, 0.9+2-1)
-  rect(0, 0.1+2-1, controlBar, 0.9+2-1, col = 'orange')
-  text(40, 0.5+2-1, paste('Control Sites: ', round(controlBar,2), '%', sep=''), adj = 0, col = 'black')
-  title('Field Work Progress')
+  rect(0, 0.1+2-1, N_NA_Bar, 0.9+2-1, col = 'red')
+  text(40, 0.5+2-1, paste('N_N Sites: ', round(N_NA_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  rect(0, 0.1+3-1, 100, 0.9+3-1)
+  rect(0, 0.1+3-1, N_Y_Bar, 0.9+3-1, col = 'green')
+  text(40, 0.5+3-1, paste('N_Y Sites: ', round(N_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  rect(0, 0.1+4-1, 100, 0.9+4-1)
+  rect(0, 0.1+4-1, Y_SM_Bar, 0.9+4-1, col = 'orange')
+  text(40, 0.5+4-1, paste('Y_Y Sites: ', round(Y_SM_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  title('Field Sites- Strata Progress')
 }
 
 #compare most recent years (this year to last year)
