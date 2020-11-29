@@ -63,12 +63,11 @@ This report provides summary statistics and figures for ongoing transect samplin
 \begingroup\Large
 | STRATA  | DEFINITION              |  
 |:--------|------------------------:|
-| Y_NA    | Harvest, No Rock        |   
-| Y_SM    | Harvest, Small Rock     |  
-| N_NA    | No Harvest, No Rock     | 
-| N_SM    | No Harvest, Small Rock  | 
-| N_LG    | No Harvest, Large Rock  | 
-| N_PILOT | No Harvest, Pilot Rocks |  
+| Y_N    | Yes Harvest, No Rock     |   
+| Y_Y    | Yes Harvest, Yes Rock    |  
+| N_N    | No Harvest, No Rock      | 
+| N_Y    | No Harvest, Yes Rock     | 
+| N_PILOT| No Harvest, Pilot Rocks  |  
 \endgroup
 
 
@@ -83,7 +82,7 @@ progress(org_data)
 
 \newpage
 
-## Summary Tables for Periods 20 and 222
+## Summary Tables for Periods 20 and 22
 These summary tables provide summary statistics on live counts and oyster densities for just periods **20 (Winter 2019-2020) and 22 (Winter 2020-2021).**   
 
 Summary statistics include:    
@@ -118,11 +117,11 @@ cal_den %>%
   ylab("Oyster density per m^2")+
   xlab("Locality")+
   labs(title= "Oyster Density by Locality for Periods 18 and 20", fill= "Period") +
-  scale_fill_discrete(breaks=c("20","18"))+
+  scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
 ```
-Figure- Calculated oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2022) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+Figure- Calculated oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
 ```{r 2022_strata,echo=FALSE,comment=NA }
@@ -133,10 +132,10 @@ cal_den %>%
   ylab("Oyster density per m^2")+
   xlab("Strata")+
   labs(title= "Oyster Density by Strata for Periods 18 and 20", fill= "Period") +
-  scale_fill_discrete(breaks=c("20","18"))+
+  scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 ```
-Figure- Calculated oyster density by strata for periods 20 (Winter 2019-2020) and 20 (Winter 2019-2020) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+Figure- Calculated oyster density by strata for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
 The following summary plot is calculated in R using the `geom_density` (https://ggplot2.tidyverse.org/reference/geom_density.html) statistical function in `ggplot`. The `geom_density` function computes and draws kernel density estimates, which is then represented as a smoothed version of a histogram. 
@@ -154,7 +153,7 @@ ggplot(aes(x=density, fill = as.factor(period))) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
 ```
-Figure- Calculated oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 20 as `r tail(org_data$date, 1)`.
+Figure- Calculated oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
 # Sampling for all Periods

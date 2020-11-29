@@ -79,6 +79,13 @@ organizeData <- function(data){
   #add harvest column (first half of strata) - either Y or N
   data$harvest <- substr(data$strata,1,1)
   
+  data$strata[data$strata == 'N_NA'] <- 'N_N'
+  data$strata[data$strata == 'Y_NA'] <- 'Y_N'
+  data$strata[data$strata == 'N_SM'] <- 'N_Y'
+  data$strata[data$strata == 'N_LG'] <- 'N_Y'
+  data$strata[data$strata == 'Y_SM'] <- 'Y_Y'
+  
+  
   return(data)
 }
 
@@ -143,6 +150,7 @@ calculateCountsDensity <- function(data, data2) {
   
   dta3$area <- round(dta3$area,digits=2)
   dta3$density <- round(dta3$density,digits=2)
+  
   
   return(dta3)
 }
@@ -332,7 +340,7 @@ plotsDensity <- function(data){
           xlab("Density")+
           ylab("Probability Density Function")+
           labs(title = "Oyster Density by Locality", fill = "Locality",
-               caption= "Figure- Calculated oyster density by locality for all periods including period 20 (current period).")+
+               caption= "Figure- Calculated oyster density by locality for all periods including period 22 (current period).")+
           facet_wrap(~locality, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -343,7 +351,7 @@ plotsDensity <- function(data){
           xlab("Density")+
           ylab("Probability Density Function")+
           labs(title = "Oyster Density by Strata", fill = "Strata",
-               caption = "Figure- Calculated oyster density by strata for all periods including period 20 (current period).")+
+               caption = "Figure- Calculated oyster density by strata for all periods including period 22 (current period).")+
           facet_wrap(~strata, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -354,7 +362,7 @@ plotsDensity <- function(data){
           xlab("Density")+
           ylab("Probability Density Function")+
           labs(title = "Oyster Density by Period", fill = "Period",
-               caption = "Figure- Calculated oyster density for all periods including period 20 (current period) using a probability density function.")+
+               caption = "Figure- Calculated oyster density for all periods including period 22 (current period) using a probability density function.")+
           facet_wrap(~period, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -363,7 +371,7 @@ plotsDensity <- function(data){
   print(ggplot(data, aes(locality, density))+
           geom_boxplot()+ coord_flip()+
           labs(title = "Oyster Density by Locality", 
-               caption = "Figure- Box plot depicting density by locality for all periods including period 20 (current period).")+
+               caption = "Figure- Box plot depicting density by locality for all periods including period 22 (current period).")+
           xlab("Locality") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -372,7 +380,7 @@ plotsDensity <- function(data){
   print(ggplot(data, aes(strata, density))+
           geom_boxplot()+ coord_flip()+
           labs(title = "Oyster Density by Strata", 
-               caption = "Figure- Box plot depicting density by strata for all periods including period 20 (current period).")+
+               caption = "Figure- Box plot depicting density by strata for all periods including period 22 (current period).")+
           xlab("Strata") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -381,7 +389,7 @@ plotsDensity <- function(data){
   print(ggplot(data, aes(as.factor(period), density))+
           geom_boxplot()+ coord_flip()+
           labs(title = "Oyster Density by Period", 
-               caption = "Figure- Box plot depicting density by period for all periods including period 20 (current period).")+
+               caption = "Figure- Box plot depicting density by period for all periods including period 22 (current period).")+
           xlab("Period") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -391,8 +399,8 @@ plotsDensity <- function(data){
           geom_point(size=5, alpha=0.5)+
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
-          labs(title = "Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 20 (current period). ")+
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20")) +
+          labs(title = "Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 22 (current period). ")+
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20", "22")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -402,8 +410,8 @@ plotsDensity <- function(data){
           geom_point(size=5, alpha=0.5) +
           scale_shape_manual(values = c(15,16,17,18,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
-          labs(title = "Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Oyster density by strata and period for all periods including period 20 (current period). ") +
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20")) +
+          labs(title = "Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Oyster density by strata and period for all periods including period 22 (current period). ") +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","22" )) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -489,7 +497,7 @@ effortPlot<- function(data) {
           xlab ("Period")+
           labs(title = "Total Transect Length Sampled by Period", 
                caption= "Figure- Bar plot of total transect length in meters sampled by period for all periods.") +
-          scale_x_discrete(limits=c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20")) +
+          scale_x_discrete(limits=c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20", "22")) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
 }
 
@@ -506,8 +514,8 @@ progress <- function(data){
   
   Y_NA <- 19
   N_NA <- 25
-  N_Y <- 53
-  Y_SM <- 72
+  N_YA <- 53
+  Y_YA <- 72
   
   
   #total rock is yy and yn
@@ -516,30 +524,30 @@ progress <- function(data){
   #nn= 25 sites
   #ny = 53 sites
   
-  Y_NA_Bar <- ((s3$transect[s3$strata == "Y_NA"] / Y_NA) * 100)
-  N_NA_Bar <- (s3$transect[s3$strata == "N_NA"] / N_NA) * 100
-  N_Y_Bar <- ((s3$transect[s3$strata == "N_LG"] / N_Y) * 100) + ((s3$transect[s3$strata == "N_SM"] / N_Y) * 100)
-  Y_SM_Bar <- (s3$transect[s3$strata == "Y_SM"] / Y_SM) * 100
+  Y_N_Bar <- ((s3$transect[s3$strata == "Y_N"] / Y_NA) * 100)
+  N_N_Bar <- (s3$transect[s3$strata == "N_N"] / N_NA) * 100
+  N_Y_Bar <- ((s3$transect[s3$strata == "N_N"] / N_NA) * 100)
+  Y_Y_Bar <- (s3$transect[s3$strata == "Y_Y"] / Y_YA) * 100
   
   plot(c(0,100), c(0,4), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
   #plot rock sites progress
   rect(0, 0.1+1-1, 100, 0.9+1-1)
-  rect(0, 0.1+1-1, Y_NA_Bar, 0.9+1-1, col = 'blue')
-  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_NA_Bar), '%', sep=''), adj = 0, col = 'black')
+  rect(0, 0.1+1-1, Y_N_Bar, 0.9+1-1, col = 'blue')
+  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_N_Bar), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+2-1, 100, 0.9+2-1)
-  rect(0, 0.1+2-1, N_NA_Bar, 0.9+2-1, col = 'red')
-  text(40, 0.5+2-1, paste('N_N Sites: ', round(N_NA_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  rect(0, 0.1+2-1, Y_Y_Bar, 0.9+2-1, col = 'red')
+  text(40, 0.5+2-1, paste('Y_Y Sites: ', round(Y_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+3-1, 100, 0.9+3-1)
   rect(0, 0.1+3-1, N_Y_Bar, 0.9+3-1, col = 'green')
   text(40, 0.5+3-1, paste('N_Y Sites: ', round(N_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+4-1, 100, 0.9+4-1)
-  rect(0, 0.1+4-1, Y_SM_Bar, 0.9+4-1, col = 'orange')
-  text(40, 0.5+4-1, paste('Y_Y Sites: ', round(Y_SM_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  rect(0, 0.1+4-1, Y_N_Bar, 0.9+4-1, col = 'orange')
+  text(40, 0.5+4-1,paste('N_N Sites: ', round(N_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
   title('Field Sites- Strata Progress')
 }
 
 #compare most recent years (this year to last year)
-#right now this is period 20 to period 19 (winter 2019-2020 to summer 2019)
+#right now this is period 20 to period 22 (winter 2019-2020 to winter 2020-2021)
 summaryRecent <- function(data){
   data2 <- subset(data, data$period > 18)
   print("Total Counts per Period")
