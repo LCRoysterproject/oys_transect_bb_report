@@ -122,54 +122,120 @@ summarydeadDensity(p2022)
 ## Summary Plots for Periods 20 and 22
   
 ```{r 2022_local, echo=FALSE,comment=NA}
-cal_den %>% 
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("22", "20"))
+
+current_plot %>% 
   filter(period== 20 | period==22) %>% 
   ggplot( aes( x= locality, y= density, fill=as.factor(period))) +
   geom_boxplot()+ coord_flip()+
   ylab("Oyster density per m^2")+
   xlab("Locality")+
-  labs(title= "Oyster Density by Locality for Periods 20 and 22", fill= "Period") +
+  labs(title= "Live Oyster Density by Locality for Periods 20 and 22", fill= "Period") +
   scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
 ```
-Figure- Calculated oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+Figure- Calculated live oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+```{r,echo=FALSE,comment=NA}
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("22", "20"))
+
+current_plot %>% 
+  filter(period== 20 | period==22) %>% 
+  ggplot( aes( x= locality, y= density_dead, fill=as.factor(period))) +
+  geom_boxplot()+ coord_flip()+
+  ylab("Oyster density per m^2")+
+  xlab("Locality")+
+  labs(title= "Dead Oyster Density by Locality for Periods 20 and 22", fill= "Period") +
+  scale_fill_discrete(breaks=c("22","20"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+```
+Figure- Calculated dead oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
 ```{r 2022_strata,echo=FALSE,comment=NA }
-cal_den %>% 
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("22", "20"))
+
+current_plot %>% 
   filter(period== 20 | period==22) %>% 
   ggplot( aes( x= strata, y= density, fill=as.factor(period))) +
   geom_boxplot()+ coord_flip()+
   ylab("Oyster density per m^2")+
   xlab("Strata")+
-  labs(title= "Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
-  scale_fill_discrete(breaks=c("20","22"))+
+  labs(title= "Live Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
+  scale_fill_discrete(breaks=c("22","20"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+
+```
+Figure- Calculated live oyster density by strata for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+
+```{r,echo=FALSE,comment=NA}
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("22", "20"))
+
+current_plot %>% 
+  filter(period== 20 | period==22) %>% 
+  ggplot( aes( x= strata, y= density_dead, fill=as.factor(period))) +
+  geom_boxplot()+ coord_flip()+
+  ylab("Oyster density per m^2")+
+  xlab("Strata")+
+  labs(title= "Dead Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
+  scale_fill_discrete(breaks=c("22","20"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 ```
-Figure- Calculated oyster density by strata for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+Figure- Calculated dead oyster density by strata for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
+
 
 The following summary plot is calculated in R using the `geom_density` (https://ggplot2.tidyverse.org/reference/geom_density.html) statistical function in `ggplot`. The `geom_density` function computes and draws kernel density estimates, which is then represented as a smoothed version of a histogram. 
   
     
 ```{r den_plot, echo=FALSE, comment=NA, error= FALSE}
+
 cal_den %>% 
   filter(period== 20 | period==22) %>% 
 ggplot(aes(x=density, fill = as.factor(period))) +
           geom_density(size = 1.5, alpha = 0.5)+
-          xlab("Density")+
+          xlab("Oyster density per m^2")+
           ylab("Probability Density Function")+
-          labs(title = "Oyster Density by Period", fill = "Period")+
+          labs(title = "Live Oyster Density by Period", fill = "Period")+
           scale_fill_manual(values=c("#E69F00", "#56B4E9"))+
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
 ```
-Figure- Calculated oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+Figure- Calculated live oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+```{r, echo=FALSE, comment=NA, error= FALSE}
+
+cal_den %>% 
+  filter(period== 20 | period==22) %>% 
+ggplot(aes(x=density_dead, fill = as.factor(period))) +
+          geom_density(size = 1.5, alpha = 0.5)+
+          xlab("Oyster density per m^2")+
+          ylab("Probability Density Function")+
+          labs(title = "Dead Oyster Density by Period", fill = "Period")+
+          scale_fill_manual(values=c("#E69F00", "#56B4E9"))+
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
+```
+Figure- Calculated dead oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
 # Sampling for all Periods
-Next, we provide summary tables and plots for all transect sampling. These data were collected between `r head(org_data$date, 1)` and `r tail(org_data$date, 1)`. 
+Next, we provide summary tables and plots for all transect sampling. These data were collected between `r head(org_data$date, 1)` and `r tail(org_data$date, 1)`. The following are only for live oysters.
 
 ## Definitions of Periods
   

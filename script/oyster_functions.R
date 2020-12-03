@@ -276,7 +276,7 @@ summaryEffort <- function(data){
 #display summary tables 
 #total counts per station, per strata, and per period
 summaryCounts <- function(data){
-  cat("Total Counts by Locality")
+  cat("Live Oyster Counts by Locality")
   line <- readline()
   a <- aggregate(count_live ~ locality, data = data, FUN = function (x) sumstats(x))
   a2 <- as.data.frame(a$count_live)
@@ -286,7 +286,7 @@ summaryCounts <- function(data){
   print(a2, row.names = FALSE)
   line <- readline()
   
-  cat("Total Counts by Strata")
+  cat("Live Oyster Counts by Strata")
   line <- readline()
   b <- aggregate(count_live ~ strata, data = data, FUN = function (x) sumstats(x))
   b2 <- as.data.frame(b$count_live)
@@ -296,7 +296,7 @@ summaryCounts <- function(data){
   print(b2, row.names = FALSE)
   line <- readline()
   
-  cat("Total Counts by Period")
+  cat("Live Oyster Counts by Period")
   line <- readline()
   c <- (aggregate(count_live ~ period, data = data, FUN = function (x) sumstats(x)))
   c2 <- as.data.frame(c$count_live)
@@ -312,7 +312,7 @@ summaryCounts <- function(data){
 #display summary tables 
 #total counts per station, per strata, and per period
 summarydeadCounts <- function(data){
-  cat("Total Counts by Locality")
+  cat("Dead Oyster Counts by Locality")
   line <- readline()
   a <- aggregate(count_dead ~ locality, data = data, FUN = function (x) sumstats(x))
   a2 <- as.data.frame(a$count_dead)
@@ -322,7 +322,7 @@ summarydeadCounts <- function(data){
   print(a2, row.names = FALSE)
   line <- readline()
   
-  cat("Total Counts by Strata")
+  cat("Dead Oyster Counts by Strata")
   line <- readline()
   b <- aggregate(count_dead ~ strata, data = data, FUN = function (x) sumstats(x))
   b2 <- as.data.frame(b$count_dead)
@@ -332,7 +332,7 @@ summarydeadCounts <- function(data){
   print(b2, row.names = FALSE)
   line <- readline()
   
-  cat("Total Counts by Period")
+  cat("Dead Oyster Counts by Period")
   line <- readline()
   c <- (aggregate(count_dead ~ period, data = data, FUN = function (x) sumstats(x)))
   c2 <- as.data.frame(c$count_dead)
@@ -347,7 +347,7 @@ summarydeadCounts <- function(data){
 #display summary tables 
 #average density per station, per strata, and per period
 summarydeadDensity <- function(data){
-  cat("Density by Locality")
+  cat("Dead Oyster Density by Locality")
   line <- readline()
   a <- aggregate(density_dead ~ locality, data = data, FUN = function (x) sumstats(x))
   a2 <- as.data.frame(a$density_dead)
@@ -357,7 +357,7 @@ summarydeadDensity <- function(data){
   print(a2, row.names = FALSE)
   line <- readline()
   
-  cat("Density by Strata")
+  cat("Dead Oyster Density by Strata")
   line <- readline()
   b <- aggregate(density_dead ~ strata, data = data, FUN = function (x) sumstats(x))
   b2 <- as.data.frame(b$density_dead)
@@ -368,7 +368,7 @@ summarydeadDensity <- function(data){
   line <- readline()
   line <- readline()
   
-  cat("Density by Period")
+  cat("Dead Oyster Density by Period")
   line <- readline()
   c <- (aggregate(density_dead ~ period, data = data, FUN = function (x) sumstats(x)))
   c2 <- as.data.frame(c$density_dead)
@@ -384,7 +384,7 @@ summarydeadDensity <- function(data){
 #display summary tables 
 #average density per station, per strata, and per period
 summaryDensity <- function(data){
-  cat("Density by Locality")
+  cat("Live Density by Locality")
   line <- readline()
   a <- aggregate(density ~ locality, data = data, FUN = function (x) sumstats(x))
   a2 <- as.data.frame(a$density)
@@ -394,7 +394,7 @@ summaryDensity <- function(data){
   print(a2, row.names = FALSE)
   line <- readline()
   
-  cat("Density by Strata")
+  cat("Live Density by Strata")
   line <- readline()
   b <- aggregate(density ~ strata, data = data, FUN = function (x) sumstats(x))
   b2 <- as.data.frame(b$density)
@@ -405,7 +405,7 @@ summaryDensity <- function(data){
   line <- readline()
   line <- readline()
   
-  cat("Density by Period")
+  cat("Live Density by Period")
   line <- readline()
   c <- (aggregate(density ~ period, data = data, FUN = function (x) sumstats(x)))
   c2 <- as.data.frame(c$density)
@@ -420,34 +420,67 @@ summaryDensity <- function(data){
 #frequency plot for density by locality
 #boxplots for average density per strata and per period
 plotsDensity <- function(data){
-  print(ggplot(cal_den, aes(x=density, fill = locality)) +
+  print(ggplot(data, aes(x=density, fill = locality)) +
           geom_density(size = 2)+
-          xlab("Density")+
+          xlab("Oyster density per m^2")+
           ylab("Probability Density Function")+
-          labs(title = "Oyster Density by Locality", fill = "Locality",
-               caption= "Figure- Calculated oyster density by locality for all periods including period 22 (current period).")+
+          labs(title = "Live Oyster Density by Locality", fill = "Locality",
+               caption= "Figure- Calculated live oyster density by locality for all periods including period 22 (current period).")+
           facet_wrap(~locality, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
   cat('\r\n\r\n')
   
-  print(ggplot(cal_den, aes(x=density, fill = strata)) +
+  print(ggplot(data, aes(x=density_dead, fill = locality)) +
           geom_density(size = 2)+
-          xlab("Density")+
+          xlab("Oyster density per m^2")+
           ylab("Probability Density Function")+
-          labs(title = "Oyster Density by Strata", fill = "Strata",
-               caption = "Figure- Calculated oyster density by strata for all periods including period 22 (current period).")+
+          labs(title = "Dead Oyster Density by Locality", fill = "Locality",
+               caption= "Figure- Calculated dead oyster density by locality for all periods including period 22 (current period).")+
+          facet_wrap(~locality, scales = 'free', ncol = 2)+
+          scale_x_continuous(limits=c(0,1500)) +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')
+  
+  print(ggplot(data, aes(x=density, fill = strata)) +
+          geom_density(size = 2)+
+          xlab("Oyster density per m^2")+
+          ylab("Probability Density Function")+
+          labs(title = "Live Oyster Density by Strata", fill = "Strata",
+               caption = "Figure- Calculated live oyster density by strata for all periods including period 22 (current period).")+
           facet_wrap(~strata, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
   cat('\r\n\r\n')
   
-  print(ggplot(cal_den, aes(x=density, fill = as.factor(period))) +
+  print(ggplot(data, aes(x=density_dead, fill = strata)) +
           geom_density(size = 2)+
-          xlab("Density")+
+          xlab("Oyster density per m^2")+
           ylab("Probability Density Function")+
-          labs(title = "Oyster Density by Period", fill = "Period",
-               caption = "Figure- Calculated oyster density for all periods including period 22 (current period) using a probability density function.")+
+          labs(title = "Dead Oyster Density by Strata", fill = "Strata",
+               caption = "Figure- Calculated dead oyster density by strata for all periods including period 22 (current period).")+
+          facet_wrap(~strata, scales = 'free', ncol = 2)+
+          scale_x_continuous(limits=c(0,1500)) +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')
+  
+  print(ggplot(data, aes(x=density, fill = as.factor(period))) +
+          geom_density(size = 2)+
+          xlab("Oyster density per m^2")+
+          ylab("Probability Density Function")+
+          labs(title = "Live Oyster Density by Period", fill = "Period",
+               caption = "Figure- Calculated live oyster density for all periods including period 22 (current period) using a probability density function.")+
+          facet_wrap(~period, scales = 'free', ncol = 2)+
+          scale_x_continuous(limits=c(0,1500)) +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')
+  
+  print(ggplot(data, aes(x=density_dead, fill = as.factor(period))) +
+          geom_density(size = 2)+
+          xlab("Oyster density per m^2")+
+          ylab("Probability Density Function")+
+          labs(title = "Dead Oyster Density by Period", fill = "Period",
+               caption = "Figure- Calculated Dead oyster density for all periods including period 22 (current period) using a probability density function.")+
           facet_wrap(~period, scales = 'free', ncol = 2)+
           scale_x_continuous(limits=c(0,1500)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -455,8 +488,17 @@ plotsDensity <- function(data){
   
   print(ggplot(data, aes(locality, density))+
           geom_boxplot()+ coord_flip()+
-          labs(title = "Oyster Density by Locality", 
-               caption = "Figure- Box plot depicting density by locality for all periods including period 22 (current period).")+
+          labs(title = "Live Oyster Density by Locality", 
+               caption = "Figure- Box plot depicting live oyster density by locality for all periods including period 22 (current period).")+
+          xlab("Locality") +
+          ylab ("Oyster density per m^2") +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')
+  
+  print(ggplot(data, aes(locality, density_dead))+
+          geom_boxplot()+ coord_flip()+
+          labs(title = "Dead Oyster Density by Locality", 
+               caption = "Figure- Box plot depicting dead oyster density by locality for all periods including period 22 (current period).")+
           xlab("Locality") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -464,8 +506,18 @@ plotsDensity <- function(data){
   
   print(ggplot(data, aes(strata, density))+
           geom_boxplot()+ coord_flip()+
-          labs(title = "Oyster Density by Strata", 
-               caption = "Figure- Box plot depicting density by strata for all periods including period 22 (current period).")+
+          labs(title = "Live Oyster Density by Strata", 
+               caption = "Figure- Box plot depicting live oyster density by strata for all periods including period 22 (current period).")+
+          xlab("Strata") +
+          ylab ("Oyster density per m^2") +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')  
+  
+  
+  print(ggplot(data, aes(strata, density_dead))+
+          geom_boxplot()+ coord_flip()+
+          labs(title = "Dead Oyster Density by Strata", 
+               caption = "Figure- Box plot depicting dead oyster density by strata for all periods including period 22 (current period).")+
           xlab("Strata") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -473,8 +525,17 @@ plotsDensity <- function(data){
   
   print(ggplot(data, aes(as.factor(period), density))+
           geom_boxplot()+ coord_flip()+
-          labs(title = "Oyster Density by Period", 
-               caption = "Figure- Box plot depicting density by period for all periods including period 22 (current period).")+
+          labs(title = "Live Oyster Density by Period", 
+               caption = "Figure- Box plot depicting live oyster density by period for all periods including period 22 (current period).")+
+          xlab("Period") +
+          ylab ("Oyster density per m^2") +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')  
+  
+  print(ggplot(data, aes(as.factor(period), density_dead))+
+          geom_boxplot()+ coord_flip()+
+          labs(title = "Dead Oyster Density by Period", 
+               caption = "Figure- Box plot depicting dead oyster density by period for all periods including period 22 (current period).")+
           xlab("Period") +
           ylab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -484,18 +545,40 @@ plotsDensity <- function(data){
           geom_point(size=5, alpha=0.5)+
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
-          labs(title = "Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 22 (current period). ")+
+          labs(title = "Live oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 22 (current period). ")+
           scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
   cat('\r\n\r\n')  
   
+  print(ggplot(data, aes(density_dead, period, shape=locality, colour=locality))+
+          geom_point(size=5, alpha=0.5)+
+          scale_shape_manual(values = c(15,16,17,18,19,3,8))+
+          scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
+          labs(title = "Dead Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Dead oyster density by locality and period for all periods including period 22 (current period). ")+
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
+          ylab("Period") +
+          xlab ("Oyster density per m^2") +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  cat('\r\n\r\n')  
+  
+  
   print(ggplot(data, aes(density, period, shape=strata, colour=strata))+
           geom_point(size=5, alpha=0.5) +
           scale_shape_manual(values = c(15,16,17,18,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
-          labs(title = "Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Oyster density by strata and period for all periods including period 22 (current period). ") +
+          labs(title = "Live Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Live oyster density by strata and period for all periods including period 22 (current period). ") +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22" )) +
+          ylab("Period") +
+          xlab ("Oyster density per m^2") +
+          theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
+  
+  print(ggplot(data, aes(density_dead, period, shape=strata, colour=strata))+
+          geom_point(size=5, alpha=0.5) +
+          scale_shape_manual(values = c(15,16,17,18,3,8))+
+          scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
+          labs(title = "Dead Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Dead oyster density by strata and period for all periods including period 22 (current period). ") +
           scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22" )) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
@@ -508,11 +591,7 @@ plotsDensity <- function(data){
 pilotSites <- function(data){
   data2 <- subset(data, data$station == "LCO10B" | data$station == "LCO11A" |
                     data$station == "LCO8B" | data$station == "LCO9A")
-  
-  require("dplyr")
-  
-  data2<- data2 %>% 
-    filter(period < 17)
+
   
   print(ggplot(data2, aes(density, period, shape=station, colour=station))+
           geom_point(size=5, alpha=0.5)+
@@ -521,7 +600,7 @@ pilotSites <- function(data){
           labs(title = "Average Density by Station and Period", shape = "Station", colour="Station", caption = " Figure - Average density comparison by period for all stations that were sampled during the pilot study.")+
           ylab("Period") +
           xlab ("Oyster density per m^2") +
-          scale_y_continuous(breaks = seq(7, 16, by = 1)) +
+          scale_y_continuous(breaks = seq(7, 22, by = 1)) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0))
   )
   line <- readline()
