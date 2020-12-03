@@ -116,7 +116,7 @@ cal_den %>%
   geom_boxplot()+ coord_flip()+
   ylab("Oyster density per m^2")+
   xlab("Locality")+
-  labs(title= "Oyster Density by Locality for Periods 18 and 20", fill= "Period") +
+  labs(title= "Oyster Density by Locality for Periods 20 and 22", fill= "Period") +
   scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
@@ -131,7 +131,7 @@ cal_den %>%
   geom_boxplot()+ coord_flip()+
   ylab("Oyster density per m^2")+
   xlab("Strata")+
-  labs(title= "Oyster Density by Strata for Periods 18 and 20", fill= "Period") +
+  labs(title= "Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
   scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 ```
@@ -231,6 +231,13 @@ summaryCounts(cal_den)
 ```
 
 \newpage
+
+### Dead Count Statistics for all Periods
+```{r deadcounts, echo=FALSE, comment=NA}
+options(width = 100)
+summarydeadCounts(cal_den)
+```
+
 
 ### Density Statistics for all Periods
 ```{r density_tables, echo=FALSE, comment=NA}

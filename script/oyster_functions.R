@@ -100,11 +100,17 @@ calculateCountsDensity <- function(data, data2) {
   dta1=aggregate(count_live~date+day+month+year+season+period+treatment+
                    locality+site+bar+station+transect+tran_length+strata+rocks+harvest,data = data2, FUN = "mean")
   
+  dta1dead=aggregate(count_dead~date+day+month+year+season+period+treatment+
+                   locality+site+bar+station+transect+tran_length+strata+rocks+harvest,data = data2, FUN = "mean")
   #first remove all rows with -999 
   dta2 <- dta1[dta1$count_live > -1,]
+  dta2dead <- dta1dead[dta1dead$count_dead > -1,]
   
   #sum live counts for each transect
   live=aggregate(count_live~season+period+treatment+locality+site+bar+station+strata+rocks+harvest,data=dta2,sum)
+  
+  #sum dead counts for each transect
+  dead=aggregate(count_dead~season+period+treatment+locality+site+bar+station+strata+rocks+harvest,data=dta2dead,sum)
   
   #aggregate transect length for each transect
   #max length for each transect
@@ -126,7 +132,7 @@ calculateCountsDensity <- function(data, data2) {
   }
   #remove rows with tran_length = -999
   data <- subset(data, data$tran_length > -1)
-  
+
   #find rows with -999
   miss <- which(data$count_live < -1)
   for(i in 1:length(miss)){
@@ -141,16 +147,21 @@ calculateCountsDensity <- function(data, data2) {
   #sum over all transects
   tranlength=aggregate(tran_length~season+period+treatment+locality+site+bar+station+strata+rocks+harvest,data=length,sum)
   
+  
   #merge live count total data frame with the tran_length total data frame
   dta3=merge(live,tranlength,by=c("season","period","treatment","locality","site","bar","station","strata","rocks","harvest"))
+  
+  require("dplyr")
+  dta3=full_join(dead,dta3)
   
   #calculate density
   dta3$area = dta3$tran_length*.1524
   dta3$density = dta3$count_live/dta3$area
+  dta3$density_dead = dta3$count_dead/dta3$area
   
   dta3$area <- round(dta3$area,digits=2)
   dta3$density <- round(dta3$density,digits=2)
-  
+  dta3$density_dead <- round(dta3$density_dead,digits=2)
   
   return(dta3)
 }
@@ -296,6 +307,42 @@ summaryCounts <- function(data){
   line <- readline()
 }
 
+
+
+#display summary tables 
+#total counts per station, per strata, and per period
+summarydeadCounts <- function(data){
+  cat("Total Counts by Locality")
+  line <- readline()
+  a <- aggregate(count_dead ~ locality, data = data, FUN = function (x) sumstats(x))
+  a2 <- as.data.frame(a$count_dead)
+  a2$Locality <- a$locality
+  a2 <- a2[,c(12, 1:11)]
+  colnames(a2) <- c("Locality", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(a2, row.names = FALSE)
+  line <- readline()
+  
+  cat("Total Counts by Strata")
+  line <- readline()
+  b <- aggregate(count_dead ~ strata, data = data, FUN = function (x) sumstats(x))
+  b2 <- as.data.frame(b$count_dead)
+  b2$Strata <- b$strata
+  b2 <- b2[,c(12, 1:11)]
+  colnames(b2) <- c("Strata", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(b2, row.names = FALSE)
+  line <- readline()
+  
+  cat("Total Counts by Period")
+  line <- readline()
+  c <- (aggregate(count_dead ~ period, data = data, FUN = function (x) sumstats(x)))
+  c2 <- as.data.frame(c$count_dead)
+  c2$Period <- c$period
+  c2 <- c2[,c(12, 1:11)]
+  colnames(c2) <- c("Period", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(c2, row.names = FALSE)
+  line <- readline()
+}
+
 #display summary tables 
 #average density per station, per strata, and per period
 summaryDensity <- function(data){
@@ -400,7 +447,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
           labs(title = "Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 22 (current period). ")+
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20", "22")) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -411,7 +458,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
           labs(title = "Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Oyster density by strata and period for all periods including period 22 (current period). ") +
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","22" )) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22" )) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -423,6 +470,11 @@ plotsDensity <- function(data){
 pilotSites <- function(data){
   data2 <- subset(data, data$station == "LCO10B" | data$station == "LCO11A" |
                     data$station == "LCO8B" | data$station == "LCO9A")
+  
+  require("dplyr")
+  
+  data2<- data2 %>% 
+    filter(period < 17)
   
   print(ggplot(data2, aes(density, period, shape=station, colour=station))+
           geom_point(size=5, alpha=0.5)+
@@ -497,7 +549,7 @@ effortPlot<- function(data) {
           xlab ("Period")+
           labs(title = "Total Transect Length Sampled by Period", 
                caption= "Figure- Bar plot of total transect length in meters sampled by period for all periods.") +
-          scale_x_discrete(limits=c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20", "22")) +
+          scale_x_discrete(limits=c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
 }
 
@@ -507,7 +559,7 @@ effortPlot<- function(data) {
 #number of completed sites as of last date in data file
 #input organized data file - not aggregated
 progress <- function(data){
-  s <- subset(data, data$period == 20)
+  s <- subset(data, data$period == 22)
   f <- function(x){length(unique(x))}
   s2 <- aggregate(transect ~ station+ strata, data = s, FUN = f)
   s3 <- aggregate(transect ~ strata, data = s2, FUN = 'sum')
@@ -549,7 +601,7 @@ progress <- function(data){
 #compare most recent years (this year to last year)
 #right now this is period 20 to period 22 (winter 2019-2020 to winter 2020-2021)
 summaryRecent <- function(data){
-  data2 <- subset(data, data$period > 18)
+  data2 <- subset(data, data$period > 19)
   print("Total Counts per Period")
   print(aggregate(count_live ~ period, FUN = "sum", data = data2))
   print("Total Counts per Period per Strata")
