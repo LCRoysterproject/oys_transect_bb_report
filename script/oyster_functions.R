@@ -343,6 +343,44 @@ summarydeadCounts <- function(data){
   line <- readline()
 }
 
+
+#display summary tables 
+#average density per station, per strata, and per period
+summarydeadDensity <- function(data){
+  cat("Density by Locality")
+  line <- readline()
+  a <- aggregate(density_dead ~ locality, data = data, FUN = function (x) sumstats(x))
+  a2 <- as.data.frame(a$density_dead)
+  a2$Locality <- a$locality
+  a2 <- a2[,c(12, 1:11)]
+  colnames(a2) <- c("Locality", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(a2, row.names = FALSE)
+  line <- readline()
+  
+  cat("Density by Strata")
+  line <- readline()
+  b <- aggregate(density_dead ~ strata, data = data, FUN = function (x) sumstats(x))
+  b2 <- as.data.frame(b$density_dead)
+  b2$Strata <- b$strata
+  b2 <- b2[,c(12, 1:11)]
+  colnames(b2) <- c("Strata", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(b2, row.names = FALSE)
+  line <- readline()
+  line <- readline()
+  
+  cat("Density by Period")
+  line <- readline()
+  c <- (aggregate(density_dead ~ period, data = data, FUN = function (x) sumstats(x)))
+  c2 <- as.data.frame(c$density_dead)
+  c2$Period <- c$period
+  c2 <- c2[,c(12, 1:11)]
+  colnames(c2) <- c("Period", "Mean", "Median", "SD", "Var","CV","SE", "L95", "U95", "Bstrap_Mean", "L95_Bstrap", "U95_Bstrap")
+  print(c2, row.names = FALSE)
+  line <- readline()
+}
+
+
+
 #display summary tables 
 #average density per station, per strata, and per period
 summaryDensity <- function(data){

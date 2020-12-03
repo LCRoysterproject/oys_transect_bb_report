@@ -99,12 +99,24 @@ Summary statistics include:
 - Lower 95% Confidence Interval from Bootstrap Values (L95 Bstrap)  
 - Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap) 
 
+### Summary of Live Counts for Periods 20 and 22
 ```{r 2022_tables, echo = FALSE, comment = NA}
 p2022 <- subset(cal_den, cal_den$period == 20 | cal_den$period == 22)
 options(width = 100) #used to make the page size "larger" in rmd to fit all the data from the tables
 
 summaryCounts(p2022)
 summaryDensity(p2022)
+```
+\newpage
+
+### Summary of Dead Counts for Periods 20 and 22
+```{r dead2022_tables, echo = FALSE, comment = NA}
+p2022 <- subset(cal_den, cal_den$period == 20 | cal_den$period == 22)
+
+options(width = 100) #used to make the page size "larger" in rmd to fit all the data from the tables
+
+summarydeadCounts(p2022)
+summarydeadDensity(p2022)
 ```
 \newpage
 ## Summary Plots for Periods 20 and 22
@@ -230,6 +242,12 @@ options(width = 100)
 summaryCounts(cal_den)
 ```
 
+
+### Live Density Statistics for all Periods
+```{r density_tables, echo=FALSE, comment=NA}
+options(width = 100)
+summaryDensity(cal_den)
+```
 \newpage
 
 ### Dead Count Statistics for all Periods
@@ -237,13 +255,14 @@ summaryCounts(cal_den)
 options(width = 100)
 summarydeadCounts(cal_den)
 ```
+\newpage
 
-
-### Density Statistics for all Periods
-```{r density_tables, echo=FALSE, comment=NA}
+### Dead Density Statistics for all Periods
+```{r density_deadtables, echo=FALSE, comment=NA}
 options(width = 100)
-summaryDensity(cal_den)
+summarydeadDensity(cal_den)
 ```
+
 
 ## Summary Density Plots for all Periods
 ```{r plots, echo=FALSE, fig.height = 10}
@@ -259,8 +278,6 @@ pilotSites(cal_den)
 ```
 \newpage
 
-
-\newpage
 ### Latest Data Entered 
 Displayed are the entries for the last date of sampling (`r tail(org_data$date, 1)`).   
 ```{r latest_data, echo=FALSE, comment=NA }
