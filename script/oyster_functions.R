@@ -545,7 +545,7 @@ plotsDensity <- function(data){
           geom_point(size=5, alpha=0.5)+
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
-          labs(title = "Live oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Oyster density by locality and period for all periods including period 22 (current period). ")+
+          labs(title = "Live Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Live oyster density by locality and period for all periods including period 22 (current period). ")+
           scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
@@ -597,7 +597,7 @@ pilotSites <- function(data){
           geom_point(size=5, alpha=0.5)+
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
-          labs(title = "Average Density by Station and Period", shape = "Station", colour="Station", caption = " Figure - Average density comparison by period for all stations that were sampled during the pilot study.")+
+          labs(title = "Average Density by Station and Period", shape = "Station", colour="Station", caption = " Figure - Average live oyster density comparison by station and period for all stations that were sampled during the pilot study.")+
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           scale_y_continuous(breaks = seq(7, 22, by = 1)) +
@@ -610,7 +610,7 @@ pilotSites <- function(data){
           geom_point(size=5, alpha=0.5)+
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
-          labs(title = "Average Density by Station and Strata", shape = "Station", colour = "Station", caption = "Figure - Average density comparison by strata and period for all stations that were sampled during the pilot study.")+
+          labs(title = "Average Density by Station and Strata", shape = "Station", colour = "Station", caption = "Figure - Average live oyster density comparison by station and strata for all stations that were sampled during the pilot study.")+
           ylab("Strata") +
           xlab("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))

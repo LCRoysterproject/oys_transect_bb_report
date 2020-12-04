@@ -26,6 +26,7 @@ library("waterData")
 library("gridExtra")
 library("cowplot")
 library('ggpubr')
+library("reshape2")
 
 #sourcing the function
 source("oyster_functions.R")
@@ -154,7 +155,7 @@ current_plot %>%
   ylab("Oyster density per m^2")+
   xlab("Locality")+
   labs(title= "Dead Oyster Density by Locality for Periods 20 and 22", fill= "Period") +
-  scale_fill_discrete(breaks=c("22","20"))+
+   scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 ```
 Figure- Calculated dead oyster density by locality for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
@@ -173,7 +174,7 @@ current_plot %>%
   ylab("Oyster density per m^2")+
   xlab("Strata")+
   labs(title= "Live Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
-  scale_fill_discrete(breaks=c("22","20"))+
+   scale_fill_discrete(breaks=c("20","22"))+
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 
 ```
@@ -193,7 +194,7 @@ current_plot %>%
   ylab("Oyster density per m^2")+
   xlab("Strata")+
   labs(title= "Dead Oyster Density by Strata for Periods 20 and 22", fill= "Period") +
-  scale_fill_discrete(breaks=c("22","20"))+
+  scale_fill_discrete(breaks=c("20","22")) +
   theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))
 ```
 Figure- Calculated dead oyster density by strata for periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
@@ -233,6 +234,92 @@ ggplot(aes(x=density_dead, fill = as.factor(period))) +
 ```
 Figure- Calculated dead oyster density by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021) using a probability density function with the last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
+
+```{r, echo=FALSE, comment=NA, error= FALSE}
+
+data1<- cal_den
+
+data1$strata <- factor(data1$strata, levels = c("Y_Y", "Y_N", "N_Y","N_N","N_PILOT"))
+
+data1$period <- factor(data1$period, levels = c("22", "20"))
+  
+  data1 %>% 
+    filter(period== 20 | period==22) %>% 
+  ggplot(aes( x= count_live, y= count_dead, color= as.factor(period))) +
+    geom_point(size=4) + 
+    ylab("Dead Oyster Counts") +
+    xlab("Live Oyster Counts") +
+    labs(title= "Live and Dead Oyster Count Comparison of Periods 20 and 22", color= "Period") +
+    scale_color_discrete(breaks=c("20","22")) +
+    theme(legend.position="right",panel.grid = element_blank(), 
+          panel.background = element_blank(), 
+          panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))+
+    facet_wrap(~strata, ncol= 2)
+```
+Figure- Live and dead oyster count comparison by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021), last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+## Double Pass Results
+```{r, echo=FALSE, comment=NA, error= FALSE, fig.width = 6, fig.height = 6}
+
+
+d2 <- org_data
+  
+  #subset for period 18+
+  d3 <- subset(d2, d2$period > 17)
+  
+
+#need data in site x pass format
+#rows are sites
+#columns are passes
+library(reshape2)
+dp <- dcast(d3, date + period + locality + site + bar + station + transect + strata + tran_length ~ pass, value.var = "count_live")
+
+#remove rows that don't have 2 passes
+dp2 <- dp[is.na(dp$`2`) == FALSE,]
+
+#compare pass 1 and pass 2 by period
+dp2$diff <- dp2$`1`- dp2$`2`
+
+#create a boxplot showing differences between pass 1 and pass 2 for periods 18,20,22
+boxplot(dp2$diff ~ dp2$period, xlab = "Period", ylab = "Difference in Counts b/w Passes")
+
+```
+  
+Figure- Boxplot of the difference in counts between pass 1 and pass 2 (pass 1 live counts - pass 2 live counts) for period 18, 20, and 22
+
+```{r, echo=FALSE, comment=NA, error= FALSE}
+d2 <- org_data
+  
+  #subset for period 18+
+  d3 <- subset(d2, d2$period > 17)
+  
+
+#need data in site x pass format
+#rows are sites
+#columns are passes
+library(reshape2)
+dp <- dcast(d3, date + period + locality + site + bar + station + transect + strata + tran_length ~ pass, value.var = "count_live")
+
+#remove rows that don't have 2 passes
+dp2 <- dp[is.na(dp$`2`) == FALSE,]
+
+#compare pass 1 and pass 2 by period
+dp2$diff <- dp2$`1`- dp2$`2`
+
+#compare CV by locality (or strata) with period in different symbols
+
+meanpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "mean")
+meanpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'mean')
+sdpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "sd")
+sdpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'sd')
+
+CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 = sdpass1$`1`/meanpass1$`1`, CV_2 = sdpass2$`2`/meanpass2$`2`)
+
+print(CV, row.names = FALSE)
+```
+
+Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period 
 
 # Sampling for all Periods
 Next, we provide summary tables and plots for all transect sampling. These data were collected between `r head(org_data$date, 1)` and `r tail(org_data$date, 1)`. The following are only for live oysters.
@@ -284,7 +371,7 @@ effortPlot(cal_den)
 ```
 \newpage
 
-## Summary Tables for all Periods 
+# Summary Tables for all Periods 
 These summaries display summary statistics of live oysters by locality, strata, and period. These contain all data collected on the oyster transects.  
   
 The summary statistics include:  
@@ -302,28 +389,28 @@ The summary statistics include:
 - Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap)  
   
 
-### Live Count Statistics for all Periods
+## Live Count Statistics for all Periods
 ```{r counts, echo=FALSE, comment=NA}
 options(width = 100)
 summaryCounts(cal_den)
 ```
 
 
-### Live Density Statistics for all Periods
+## Live Density Statistics for all Periods
 ```{r density_tables, echo=FALSE, comment=NA}
 options(width = 100)
 summaryDensity(cal_den)
 ```
 \newpage
 
-### Dead Count Statistics for all Periods
+## Dead Count Statistics for all Periods
 ```{r deadcounts, echo=FALSE, comment=NA}
 options(width = 100)
 summarydeadCounts(cal_den)
 ```
 \newpage
 
-### Dead Density Statistics for all Periods
+## Dead Density Statistics for all Periods
 ```{r density_deadtables, echo=FALSE, comment=NA}
 options(width = 100)
 summarydeadDensity(cal_den)
@@ -336,7 +423,28 @@ plotsDensity(cal_den)
 ```
 \newpage
 
-## Summary Plots for Pilot Study Sites
+```{r, echo=FALSE, fig.height = 8, fig.height = 8}
+require(viridis)
+
+data1<- cal_den
+
+data1$strata <- factor(data1$strata, levels = c("Y_Y", "Y_N", "N_Y","N_N","N_PILOT"))
+
+ggplot( data= data1, aes( x= count_live, y= count_dead)) +
+  geom_point(size=4) + 
+  ylab("Dead Oyster Counts") +
+  xlab("Live Oyster Counts") +
+  labs(title= "Live and Dead Count Comparison For All Periods", color= "Period") +
+  #scale_color_viridis(option="heat",discrete=TRUE) +
+  theme(legend.position="right",panel.grid = element_blank(), 
+        panel.background = element_blank(), 
+        panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid")) +
+    facet_wrap(~strata, ncol= 2 )
+```
+Figure- Live and dead oyster comparison for all periods, last sample date of period 22 is `r tail(org_data$date, 1)`.
+\newpage
+
+# Summary Plots for Pilot Study Sites
 A subset of the oyster transect locations were sampled over time for a pilot study. Here we provide plots of live oyster counts and density for these pilot stations with Lone Cabbage (LCO10B, LCO11A, LCO8B, LCO9A).  
 
 ```{r pilot_sites, echo=FALSE,comment=NA}
@@ -344,7 +452,7 @@ pilotSites(cal_den)
 ```
 \newpage
 
-### Latest Data Entered 
+# Latest Data Entered 
 Displayed are the entries for the last date of sampling (`r tail(org_data$date, 1)`).   
 ```{r latest_data, echo=FALSE, comment=NA }
 latest_obs<- org_data  %>% 
