@@ -318,7 +318,7 @@ CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 
 
 print(CV, row.names = FALSE)
 ```
-
+  
 Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period for live counts  
 \newpage
 
@@ -340,7 +340,8 @@ dp2$diff <- dp2$`1`- dp2$`2`
 #create a boxplot showing differences between pass 1 and pass 2 for periods 18,20,22
 boxplot(dp2$diff ~ dp2$period, xlab = "Period", ylab = "Difference in Dead Counts b/w Passes")
 ```
-Figure- Boxplot of the dead difference in dead counts between pass 1 and pass 2 (pass 1 live counts - pass 2 live counts) for period 18, 20, and 22
+  
+Figure- Boxplot of the difference in dead counts between pass 1 and pass 2 (pass 1 dead counts - pass 2 dead counts) for period 18, 20, and 22
 
 ```{r, echo=FALSE, comment=NA, error= FALSE}
 d2 <- org_data
@@ -372,7 +373,7 @@ CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 
 
 print(CV, row.names = FALSE)
 ```
-
+  
 Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period for dead counts
 
 
