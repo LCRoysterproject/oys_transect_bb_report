@@ -695,7 +695,7 @@ progress <- function(data){
   
   Y_N_Bar <- ((s3$transect[s3$strata == "Y_N"] / Y_NA) * 100)
   N_N_Bar <- (s3$transect[s3$strata == "N_N"] / N_NA) * 100
-  N_Y_Bar <- ((s3$transect[s3$strata == "N_N"] / N_NA) * 100)
+  N_Y_Bar <- ((s3$transect[s3$strata == "N_Y"] / N_YA) * 100)
   Y_Y_Bar <- (s3$transect[s3$strata == "Y_Y"] / Y_YA) * 100
   
   plot(c(0,100), c(0,4), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
@@ -710,7 +710,7 @@ progress <- function(data){
   rect(0, 0.1+3-1, N_Y_Bar, 0.9+3-1, col = 'green')
   text(40, 0.5+3-1, paste('N_Y Sites: ', round(N_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+4-1, 100, 0.9+4-1)
-  rect(0, 0.1+4-1, Y_N_Bar, 0.9+4-1, col = 'orange')
+  rect(0, 0.1+4-1, N_N_Bar, 0.9+4-1, col = 'orange')
   text(40, 0.5+4-1,paste('N_N Sites: ', round(N_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
   title('Field Sites- Strata Progress')
 }

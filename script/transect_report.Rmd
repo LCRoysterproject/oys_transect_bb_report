@@ -259,7 +259,7 @@ data1$period <- factor(data1$period, levels = c("22", "20"))
 Figure- Live and dead oyster count comparison by periods 20 (Winter 2019-2020) and 22 (Winter 2020-2021), last sample date of period 22 as `r tail(org_data$date, 1)`.
 \newpage
 
-## Double Pass Results
+## Live Counts Double Pass Results
 ```{r, echo=FALSE, comment=NA, error= FALSE, fig.width = 6, fig.height = 6}
 
 
@@ -282,11 +282,11 @@ dp2 <- dp[is.na(dp$`2`) == FALSE,]
 dp2$diff <- dp2$`1`- dp2$`2`
 
 #create a boxplot showing differences between pass 1 and pass 2 for periods 18,20,22
-boxplot(dp2$diff ~ dp2$period, xlab = "Period", ylab = "Difference in Counts b/w Passes")
+boxplot(dp2$diff ~ dp2$period, xlab = "Period", ylab = "Difference in Live Counts b/w Passes")
 
 ```
   
-Figure- Boxplot of the difference in counts between pass 1 and pass 2 (pass 1 live counts - pass 2 live counts) for period 18, 20, and 22
+Figure- Boxplot of the difference in live counts between pass 1 and pass 2 (pass 1 live counts - pass 2 live counts) for period 18, 20, and 22
 
 ```{r, echo=FALSE, comment=NA, error= FALSE}
 d2 <- org_data
@@ -319,7 +319,62 @@ CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 
 print(CV, row.names = FALSE)
 ```
 
-Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period 
+Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period for live counts  
+\newpage
+
+## Dead Counts Double Pass Results
+```{r, echo=FALSE, comment=NA, error= FALSE, fig.width = 6, fig.height = 6}
+
+d2 <- org_data
+  
+#subset for period 18+
+d3 <- subset(d2, d2$period > 17)
+dp <- dcast(d3, date + period + locality + site + bar + station + transect + strata + tran_length ~ pass, value.var = "count_dead")
+
+#remove rows that don't have 2 passes
+dp2 <- dp[is.na(dp$`2`) == FALSE,]
+
+#compare pass 1 and pass 2 by period
+dp2$diff <- dp2$`1`- dp2$`2`
+
+#create a boxplot showing differences between pass 1 and pass 2 for periods 18,20,22
+boxplot(dp2$diff ~ dp2$period, xlab = "Period", ylab = "Difference in Dead Counts b/w Passes")
+```
+Figure- Boxplot of the dead difference in dead counts between pass 1 and pass 2 (pass 1 live counts - pass 2 live counts) for period 18, 20, and 22
+
+```{r, echo=FALSE, comment=NA, error= FALSE}
+d2 <- org_data
+  
+  #subset for period 18+
+  d3 <- subset(d2, d2$period > 17)
+  
+
+#need data in site x pass format
+#rows are sites
+#columns are passes
+library(reshape2)
+dp <- dcast(d3, date + period + locality + site + bar + station + transect + strata + tran_length ~ pass, value.var = "count_dead")
+
+#remove rows that don't have 2 passes
+dp2 <- dp[is.na(dp$`2`) == FALSE,]
+
+#compare pass 1 and pass 2 by period
+dp2$diff <- dp2$`1`- dp2$`2`
+
+#compare CV by locality (or strata) with period in different symbols
+
+meanpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "mean")
+meanpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'mean')
+sdpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "sd")
+sdpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'sd')
+
+CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 = sdpass1$`1`/meanpass1$`1`, CV_2 = sdpass2$`2`/meanpass2$`2`)
+
+print(CV, row.names = FALSE)
+```
+
+Table- Coefficient variation between pass 1 and pass 2, aggregated by locality and period for dead counts
+
 
 # Sampling for all Periods
 Next, we provide summary tables and plots for all transect sampling. These data were collected between `r head(org_data$date, 1)` and `r tail(org_data$date, 1)`. The following are only for live oysters.
