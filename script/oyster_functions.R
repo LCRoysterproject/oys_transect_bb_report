@@ -686,6 +686,7 @@ progress <- function(data){
   N_YA <- 53
   Y_YA <- 72
   
+  Total<- 169
   
   #total rock is yy and yn
   #yy= 72 sites
@@ -698,11 +699,16 @@ progress <- function(data){
   N_Y_Bar <- ((s3$transect[s3$strata == "N_Y"] / N_YA) * 100)
   Y_Y_Bar <- (s3$transect[s3$strata == "Y_Y"] / Y_YA) * 100
   
-  plot(c(0,100), c(0,4), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
+  total <- ((sum(s3$transect))/ Total) * 100  
+  
+  plot(c(0,100), c(0,5), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
   #plot rock sites progress
+  rect(0, 0.1+5-1, 100, 0.9+5-1)
+  rect(0, 0.1+5-1, total, 0.9+5-1, col = 'purple')
+  text(40, 0.5+5-1,paste('Total Progress: ', round(total,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+1-1, 100, 0.9+1-1)
   rect(0, 0.1+1-1, Y_N_Bar, 0.9+1-1, col = 'blue')
-  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_N_Bar), '%', sep=''), adj = 0, col = 'black')
+  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+2-1, 100, 0.9+2-1)
   rect(0, 0.1+2-1, Y_Y_Bar, 0.9+2-1, col = 'red')
   text(40, 0.5+2-1, paste('Y_Y Sites: ', round(Y_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
