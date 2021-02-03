@@ -693,7 +693,13 @@ progress <- function(data){
   N_Y_Bar <- ((s3$tran_length[s3$strata == "N_Y"] / N_YA) * 100)
   Y_Y_Bar <- (s3$tran_length[s3$strata == "Y_Y"] / Y_YA) * 100
   
-  total <- ((sum(s3$tran_length))/ Total) * 100  
+  
+  Y_N_sub_total<- min(Y_NA, s3$tran_length[s3$strata == "Y_N"])
+  N_N_sub_total<- min(N_NA, s3$tran_length[s3$strata == "N_N"])
+  Y_Y_sub_total<- min(Y_YA, s3$tran_length[s3$strata == "Y_Y"])
+  N_Y_sub_total<- min(N_YA, s3$tran_length[s3$strata == "N_Y"])
+  
+  total <- ((sum(Y_N_sub_total,N_N_sub_total, Y_Y_sub_total, N_Y_sub_total))/ Total) * 100  
   
   plot(c(0,100), c(0,5), type = 'n', xlab = 'Percentage Complete per Strata in meters', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
   #plot rock sites progress
