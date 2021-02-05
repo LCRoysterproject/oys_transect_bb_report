@@ -678,46 +678,46 @@ effortPlot<- function(data) {
 progress <- function(data){
   s <- subset(data, data$period == 22)
   f <- function(x){length(unique(x))}
-  s2 <- aggregate(transect ~ station+ strata, data = s, FUN = f)
-  s3 <- aggregate(transect ~ strata, data = s2, FUN = 'sum')
+  s2 <- aggregate(tran_length ~ station + strata + transect, data = s, FUN = max)
+  s3 <- aggregate(tran_length ~ strata, data = s2, FUN = 'sum')
   
-  Y_NA <- 19
-  N_NA <- 25
-  N_YA <- 53
-  Y_YA <- 72
+  Y_NA <- 424
+  N_NA <- 543
+  N_YA <- 1183
+  Y_YA <- 1149
   
-  Total<- 169
+  Total<- 3299
   
-  #total rock is yy and yn
-  #yy= 72 sites
-  #yn= 19 sites 
-  #nn= 25 sites
-  #ny = 53 sites
+  Y_N_Bar <- ((s3$tran_length[s3$strata == "Y_N"] / Y_NA) * 100)
+  N_N_Bar <- (s3$tran_length[s3$strata == "N_N"] / N_NA) * 100
+  N_Y_Bar <- ((s3$tran_length[s3$strata == "N_Y"] / N_YA) * 100)
+  Y_Y_Bar <- (s3$tran_length[s3$strata == "Y_Y"] / Y_YA) * 100
   
-  Y_N_Bar <- ((s3$transect[s3$strata == "Y_N"] / Y_NA) * 100)
-  N_N_Bar <- (s3$transect[s3$strata == "N_N"] / N_NA) * 100
-  N_Y_Bar <- ((s3$transect[s3$strata == "N_Y"] / N_YA) * 100)
-  Y_Y_Bar <- (s3$transect[s3$strata == "Y_Y"] / Y_YA) * 100
   
-  total <- ((sum(s3$transect))/ Total) * 100  
+  Y_N_sub_total<- min(Y_NA, s3$tran_length[s3$strata == "Y_N"])
+  N_N_sub_total<- min(N_NA, s3$tran_length[s3$strata == "N_N"])
+  Y_Y_sub_total<- min(Y_YA, s3$tran_length[s3$strata == "Y_Y"])
+  N_Y_sub_total<- min(N_YA, s3$tran_length[s3$strata == "N_Y"])
   
-  plot(c(0,100), c(0,5), type = 'n', xlab = 'Percentage Complete per Strata', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
+  total <- ((sum(Y_N_sub_total,N_N_sub_total, Y_Y_sub_total, N_Y_sub_total))/ Total) * 100  
+  
+  plot(c(0,100), c(0,5), type = 'n', xlab = 'Percentage Complete per Strata in meters', ylab = '', yaxt = 'n', mar=c(3,3,3,3))
   #plot rock sites progress
   rect(0, 0.1+5-1, 100, 0.9+5-1)
   rect(0, 0.1+5-1, total, 0.9+5-1, col = 'purple')
   text(40, 0.5+5-1,paste('Total Progress: ', round(total,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+1-1, 100, 0.9+1-1)
   rect(0, 0.1+1-1, Y_N_Bar, 0.9+1-1, col = 'blue')
-  text(40, 0.5+1-1, paste('Y_N Sites: ', round(Y_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  text(40, 0.5+1-1, paste('Y_N Meters: ', round(Y_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+2-1, 100, 0.9+2-1)
   rect(0, 0.1+2-1, Y_Y_Bar, 0.9+2-1, col = 'red')
-  text(40, 0.5+2-1, paste('Y_Y Sites: ', round(Y_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  text(40, 0.5+2-1, paste('Y_Y Meters: ', round(Y_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+3-1, 100, 0.9+3-1)
   rect(0, 0.1+3-1, N_Y_Bar, 0.9+3-1, col = 'green')
-  text(40, 0.5+3-1, paste('N_Y Sites: ', round(N_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  text(40, 0.5+3-1, paste('N_Y Meters: ', round(N_Y_Bar,2), '%', sep=''), adj = 0, col = 'black')
   rect(0, 0.1+4-1, 100, 0.9+4-1)
   rect(0, 0.1+4-1, N_N_Bar, 0.9+4-1, col = 'orange')
-  text(40, 0.5+4-1,paste('N_N Sites: ', round(N_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
+  text(40, 0.5+4-1,paste('N_N Meters: ', round(N_N_Bar,2), '%', sep=''), adj = 0, col = 'black')
   title('Field Sites- Strata Progress')
 }
 
