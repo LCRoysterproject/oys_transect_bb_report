@@ -688,9 +688,9 @@ progress <- function(data){
   
   Total<- 3299
   
-  Y_N_Bar <- ((s3$tran_length[s3$strata == "Y_N"] / Y_NA) * 100)
+  Y_N_Bar <- (s3$tran_length[s3$strata == "Y_N"] / Y_NA) * 100
   N_N_Bar <- (s3$tran_length[s3$strata == "N_N"] / N_NA) * 100
-  N_Y_Bar <- ((s3$tran_length[s3$strata == "N_Y"] / N_YA) * 100)
+  N_Y_Bar <- (s3$tran_length[s3$strata == "N_Y"] / N_YA) * 100
   Y_Y_Bar <- (s3$tran_length[s3$strata == "Y_Y"] / Y_YA) * 100
   
   

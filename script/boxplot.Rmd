@@ -1,0 +1,135 @@
+---
+title: ""
+author: ""
+date: ""
+output: 
+  word_document
+  
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, messages= FALSE, warning= FALSE, comment = NA, fig.width = 7, fig.height=7)
+knitr::opts_knit$set(root.dir=normalizePath('../'),fig.align="center")
+#devtools::install_github("haozhu233/kableExtra")
+
+options(scipen=999, digits=2)
+
+library("lubridate")
+library("ggplot2")
+library("dplyr")
+library("viridis")
+library("tidyverse")
+library("scales")
+library("waterData")
+library("gridExtra")
+library("cowplot")
+library('ggpubr')
+library("reshape2")
+
+#sourcing the function
+source("oyster_functions.R")
+```
+
+
+```{r organize, include= FALSE}
+data <- read.csv("data//transect_data.csv", header= TRUE)
+org_data <- organizeData(data)
+cal_den<- calculateCountsDensity(data,org_data)
+
+### days sampled for all time
+total_days <- length(unique(org_data$date))
+
+total_days_22 <- length(unique(org_data$date[org_data$date > "2020-08-01"]))
+```
+
+
+
+```{r 2022_local, echo=FALSE,comment=NA}
+
+# Colors for periods
+#18- CC79A7 (pink)
+#20-E69F00 (orange)
+#22-56B4E9 (blue)
+
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("18", "20", "22"))
+current_plot %>% 
+  filter(period== 18 | period== 20 | period==22) %>% 
+  ggplot( aes(y= density, fill=as.factor(period))) +
+  geom_boxplot()+
+  ylim(0,500) +
+  ylab("Oyster density per m^2")+
+  labs(title= "Live Oyster Density by Locality for Periods 18, 20, and 22", fill= "Period") +
+  scale_fill_manual(values=c("#CC79A7", "#E69F00", "#56B4E9"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"))+
+  facet_wrap(~locality)
+
+```
+Figure- Calculated live oyster density by locality for periods 18 (Winter 2018-2019), 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+```{r,echo=FALSE,comment=NA}
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("18", "20", "22"))
+
+current_plot %>% 
+  filter(period== 18 | period== 20 | period==22) %>% 
+  ggplot( aes( y= density_dead, fill=as.factor(period))) +
+  geom_boxplot() +
+  ylim(0,150) +
+  ylab("Oyster density per m^2")+
+  labs(title= "Dead Oyster Density by Locality for Periods 18, 20, and 22", fill= "Period") +
+  scale_fill_manual(values=c("#CC79A7", "#E69F00", "#56B4E9"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid")) +
+  facet_wrap(~locality)
+```
+Figure- Calculated dead oyster density by locality for periods 18 (Winter 2018-2019), 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+```{r 2022_strata,echo=FALSE,comment=NA }
+
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("18", "20", "22"))
+current_plot$strata <- factor(current_plot$strata, levels = c("Y_Y", "Y_N", "N_Y", "N_N", "N_PILOT"))
+
+current_plot %>% 
+  filter(period== 18 | period== 20 | period==22) %>% 
+  ggplot( aes(y= density, fill=as.factor(period))) +
+  geom_boxplot() +
+  ylim(0,500) +
+  ylab("Oyster density per m^2")+
+  labs(title= "Live Oyster Density by Strata for Periods 18, 20 and 22", fill= "Period") +
+  scale_fill_manual(values=c("#CC79A7", "#E69F00", "#56B4E9"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid")) +
+    facet_wrap(~strata, ncol= 2)
+
+```
+Figure- Calculated live oyster density by strata for  periods 18 (Winter 2018-2019), 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
+
+
+```{r,echo=FALSE,comment=NA}
+current_plot<- cal_den
+
+current_plot$period <- factor(current_plot$period, levels = c("18", "20", "22"))
+current_plot$strata <- factor(current_plot$strata, levels = c("Y_Y", "Y_N", "N_Y", "N_N", "N_PILOT"))
+
+current_plot %>% 
+  filter(period== 18 | period== 20 | period==22) %>% 
+  ggplot( aes(y= density_dead, fill=as.factor(period))) +
+  geom_boxplot()+ 
+  ylim(0,150) +
+  ylab("Oyster density per m^2")+
+  labs(title= "Dead Oyster Density by Strata for Periods 18, 20 and 22", fill= "Period") +
+  scale_fill_manual(values=c("#CC79A7", "#E69F00", "#56B4E9"))+
+  theme(legend.position="right",panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid")) +
+    facet_wrap(~strata, ncol= 2)
+```
+Figure- Calculated dead oyster density by strata for periods 18 (Winter 2018-2019), 20 (Winter 2019-2020) and 22 (Winter 2020-2021) with the last sample date of period 22 as `r tail(org_data$date, 1)`.
+\newpage
