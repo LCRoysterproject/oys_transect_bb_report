@@ -676,17 +676,17 @@ effortPlot<- function(data) {
 #number of completed sites as of last date in data file
 #input organized data file - not aggregated
 progress <- function(data){
-  s <- subset(data, data$period == 22)
+  s <- subset(data, data$period == 24)
   f <- function(x){length(unique(x))}
   s2 <- aggregate(tran_length ~ station + strata + transect, data = s, FUN = max)
   s3 <- aggregate(tran_length ~ strata, data = s2, FUN = 'sum')
   
-  Y_NA <- 424
-  N_NA <- 543
-  N_YA <- 1183
-  Y_YA <- 1149
+  Y_NA <- 332
+  N_NA <- 339
+  N_YA <- 1166
+  Y_YA <- 1388
   
-  Total<- 3299
+  Total<- 3225
   
   Y_N_Bar <- (s3$tran_length[s3$strata == "Y_N"] / Y_NA) * 100
   N_N_Bar <- (s3$tran_length[s3$strata == "N_N"] / N_NA) * 100
