@@ -134,15 +134,15 @@ calculateCountsDensity <- function(data, data2) {
   data <- subset(data, data$tran_length > -1)
 
   #find rows with -999
-  miss <- which(data$count_live < -1)
-  for(i in 1:length(miss)){
-    ind <- miss[i]
-    period <- data$period[ind]
-    station <- data$station[ind]
-    transect <- data$transect[ind]
-    #subtract 2.5 from the transect length for this particular station/transect that has a missing value
-    length$tran_length[length$station == station & length$transect == transect & length$period == period] <- length$tran_length[length$station == station & length$transect == transect & length$period == period] - 2.5
-  }
+  # miss <- which(data$count_live < -1)
+  # for(i in 1:length(miss)){
+  #   ind <- miss[i]
+  #   period <- data$period[ind]
+  #   station <- data$station[ind]
+  #   transect <- data$transect[ind]
+  #   #subtract 2.5 from the transect length for this particular station/transect that has a missing value
+  #   length$tran_length[length$station == station & length$transect == transect & length$period == period] <- length$tran_length[length$station == station & length$transect == transect & length$period == period] - 2.5
+  # }
   
   #sum over all transects
   tranlength=aggregate(tran_length~season+period+treatment+locality+site+bar+station+strata+rocks+harvest,data=length,sum)
@@ -688,15 +688,20 @@ progress <- function(data){
   
   Total<- 3225
   
-  Y_N_Bar <- (s3$tran_length[s3$strata == "Y_N"] / Y_NA) * 100
-  N_N_Bar <- (s3$tran_length[s3$strata == "N_N"] / N_NA) * 100
-  N_Y_Bar <- (s3$tran_length[s3$strata == "N_Y"] / N_YA) * 100
-  Y_Y_Bar <- (s3$tran_length[s3$strata == "Y_Y"] / Y_YA) * 100
+  ifelse(length(s3$tran_length[s3$strata == "Y_N"])>0, Y_N_done <- s3$tran_length[s3$strata == "Y_N"], Y_N_done <- 0)
+  ifelse(length(s3$tran_length[s3$strata == "N_N"])>0, N_N_done <- s3$tran_length[s3$strata == "N_N"], N_N_done <- 0)
+  ifelse(length(s3$tran_length[s3$strata == "N_Y"])>0, N_Y_done <- s3$tran_length[s3$strata == "N_Y"], N_Y_done <- 0)
+  ifelse(length(s3$tran_length[s3$strata == "Y_Y"])>0, Y_Y_done <- s3$tran_length[s3$strata == "Y_Y"], Y_Y_done <- 0)
+  
+  Y_N_Bar <- (Y_N_done / Y_NA) * 100
+  N_N_Bar <- (N_N_done / N_NA) * 100
+  N_Y_Bar <- (N_Y_done / N_YA) * 100
+  Y_Y_Bar <- (Y_Y_done / Y_YA) * 100
   
   
-  Y_N_sub_total<- min(Y_NA, s3$tran_length[s3$strata == "Y_N"])
-  N_N_sub_total<- min(N_NA, s3$tran_length[s3$strata == "N_N"])
-  Y_Y_sub_total<- min(Y_YA, s3$tran_length[s3$strata == "Y_Y"])
+  Y_N_sub_total<- min(Y_NA, Y_N_done)
+  N_N_sub_total<- min(N_NA, N_N_done)
+  Y_Y_sub_total<- min(Y_YA, N_Y_done)
   N_Y_sub_total<- min(N_YA, s3$tran_length[s3$strata == "N_Y"])
   
   total <- ((sum(Y_N_sub_total,N_N_sub_total, Y_Y_sub_total, N_Y_sub_total))/ Total) * 100  

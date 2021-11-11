@@ -80,7 +80,7 @@ This report provides summary statistics and figures for ongoing transect samplin
 Here, we provide a progress bar showing how much of the sampling has been completed for this season, plus summary tables and plots comparing live counts and density of oysters between this current season and last year. **The current sampling period is period 24, and last year's sampling period is period 22.** 
 
 ```{r progress_bar, echo=FALSE,comment=NA, fig.width = 7, fig.height = 6}
-#progress(org_data)
+progress(org_data)
 ```
 
 \newpage
@@ -381,12 +381,10 @@ dp2$diff <- dp2$`1`- dp2$`2`
 
 #compare CV by locality (or strata) with period in different symbols
 
-meanpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "mean")
-meanpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'mean')
-sdpass1 <- aggregate(`1` ~ locality + period, data = dp2, FUN = "sd")
-sdpass2 <- aggregate(`2` ~ locality + period, data = dp2, FUN = 'sd')
+meanpass <- aggregate(diff ~ locality + period, data = dp2, FUN = "mean")
+sdpass <- aggregate(diff ~ locality + period, data = dp2, FUN = "sd")
 
-CV <- data.frame(locality = meanpass1$locality, period = meanpass1$period, CV_1 = sdpass1$`1`/meanpass1$`1`, CV_2 = sdpass2$`2`/meanpass2$`2`)
+CV <- data.frame(locality = meanpass$locality, period = meanpass$period, mean_difference = meanpass$diff, sd_difference = sdpass$diff, CV = sdpass$diff/meanpass$diff)
 
 print(CV, row.names = FALSE)
 ```
