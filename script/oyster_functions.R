@@ -690,7 +690,7 @@ progress <- function(data){
   
   ifelse(length(s3$tran_length[s3$strata == "Y_N"])>0, Y_N_done <- s3$tran_length[s3$strata == "Y_N"], Y_N_done <- 0)
   ifelse(length(s3$tran_length[s3$strata == "N_N"])>0, N_N_done <- s3$tran_length[s3$strata == "N_N"], N_N_done <- 0)
-  ifelse(length(s3$tran_length[s3$strata == "N_Y"])>0, N_Y_done <- s3$tran_length[s3$strata == "N_Y"], N_Y_done <- 0)
+  ifelse(length(s3$tran_length[s3$strata == "N_Y"])>0, N_Y_done <- s3$tran_length[s3$strata == "N_Y"] + s3$tran_length[s3$strata == "N_PILOT"], N_Y_done <- 0)
   ifelse(length(s3$tran_length[s3$strata == "Y_Y"])>0, Y_Y_done <- s3$tran_length[s3$strata == "Y_Y"], Y_Y_done <- 0)
   
   Y_N_Bar <- (Y_N_done / Y_NA) * 100
@@ -701,8 +701,8 @@ progress <- function(data){
   
   Y_N_sub_total<- min(Y_NA, Y_N_done)
   N_N_sub_total<- min(N_NA, N_N_done)
-  Y_Y_sub_total<- min(Y_YA, N_Y_done)
-  N_Y_sub_total<- min(N_YA, s3$tran_length[s3$strata == "N_Y"])
+  Y_Y_sub_total<- min(Y_YA, Y_Y_done)
+  N_Y_sub_total<- min(N_YA, N_Y_done)
   
   total <- ((sum(Y_N_sub_total,N_N_sub_total, Y_Y_sub_total, N_Y_sub_total))/ Total) * 100  
   
