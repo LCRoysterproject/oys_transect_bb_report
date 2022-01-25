@@ -13,7 +13,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, messages= FALSE, warning= FALSE, comment = NA, fig.width = 7, fig.height=7)
 knitr::opts_knit$set(root.dir=normalizePath('../'),fig.align="center")
-#devtools::install_github("haozhu233/kableExtra")
 
 options(scipen=999, digits=2)
 
