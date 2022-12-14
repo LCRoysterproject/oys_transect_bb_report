@@ -546,7 +546,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
           labs(title = "Live Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Live oyster density by locality and period for all periods including period 22 (current period). ")+
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -557,7 +557,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,19,3,8))+
           scale_color_manual(values = c("#E69F00", "#000000", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"))+
           labs(title = "Dead Oyster Density by Locality and Period", shape = "Locality", colour="Locality", caption = "Figure - Dead oyster density by locality and period for all periods including period 22 (current period). ")+
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22")) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -569,7 +569,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
           labs(title = "Live Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Live oyster density by strata and period for all periods including period 22 (current period). ") +
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22" )) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
@@ -579,7 +579,7 @@ plotsDensity <- function(data){
           scale_shape_manual(values = c(15,16,17,18,3,8))+
           scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"))+
           labs(title = "Dead Oyster Density by Strata and Period", shape = "Strata", colour="Strata", caption = "Figure - Dead oyster density by strata and period for all periods including period 22 (current period). ") +
-          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22" )) +
+          scale_y_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26")) +
           ylab("Period") +
           xlab ("Oyster density per m^2") +
           theme(panel.grid = element_blank(), panel.background = element_blank(), panel.border = element_rect(colour = "black", fill=NA,size=1, linetype="solid"), plot.caption = element_text(hjust = 0)))
