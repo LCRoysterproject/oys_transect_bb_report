@@ -99,7 +99,9 @@ Summary statistics include:
 - Upper 95% Confidence Interval assuming normal distribution (U95)  
 - Bootstrap Mean (Bstrap Mean)  
 - Lower 95% Confidence Interval from Bootstrap Values (L95 Bstrap)  
-- Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap) 
+- Upper 95% Confidence Interval from Bootstrap Values (U95 Bstrap)  
+
+Data are aggregated by station and period and then summarized in the tables below. Live counts are the number of live oysters summarized by locality, strata, and period, and density is the number of live oysters per square meter summarized by locality, strata, and period. 
 
 ### Summary of Live Counts for Periods 20, 22, 24, and 26
 ```{r 1824_tables, echo = FALSE, comment = NA}
