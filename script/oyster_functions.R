@@ -682,7 +682,7 @@ progress <- function(data){
   s2 <- aggregate(tran_length ~ station + strata + transect, data = s, FUN = max)
   s3 <- aggregate(tran_length ~ strata, data = s2, FUN = 'sum')
   
-  Y_NA <- 323
+  Y_NA <- 332
   N_NA <- 392
   N_YA <- 625
   Y_YA <- 854
