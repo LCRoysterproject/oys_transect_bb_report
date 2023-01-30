@@ -682,7 +682,7 @@ progress <- function(data){
   s2 <- aggregate(tran_length ~ station + strata + transect, data = s, FUN = max)
   s3 <- aggregate(tran_length ~ strata, data = s2, FUN = 'sum')
   
-  Y_NA <- 332
+  Y_NA <- 323
   N_NA <- 392
   N_YA <- 625
   Y_YA <- 854
@@ -695,16 +695,15 @@ progress <- function(data){
   ifelse(length(s3$tran_length[s3$strata == "N_PILOT"])>0, N_Y_pilot_done <- s3$tran_length[s3$strata == "N_PILOT"], N_Y_pilot_done <- 0)
   ifelse(length(s3$tran_length[s3$strata == "Y_Y"])>0, Y_Y_done <- s3$tran_length[s3$strata == "Y_Y"], Y_Y_done <- 0)
   
-  Y_N_Bar <- (Y_N_done / Y_NA) * 100
-  N_N_Bar <- (N_N_done / N_NA) * 100
-  N_Y_Bar <- ((N_Y_done+N_Y_pilot_done) / N_YA) * 100
-  Y_Y_Bar <- (Y_Y_done / Y_YA) * 100
-  
-  
   Y_N_sub_total<- min(Y_NA, Y_N_done)
   N_N_sub_total<- min(N_NA, N_N_done)
   Y_Y_sub_total<- min(Y_YA, Y_Y_done)
   N_Y_sub_total<- min(N_YA, N_Y_done)
+  
+  Y_N_Bar <- (Y_N_sub_total / Y_NA) * 100
+  N_N_Bar <- (N_N_sub_total / N_NA) * 100
+  N_Y_Bar <- ((N_Y_sub_total+N_Y_pilot_done) / N_YA) * 100
+  Y_Y_Bar <- (Y_Y_sub_total / Y_YA) * 100
   
   total <- ((sum(Y_N_sub_total,N_N_sub_total, Y_Y_sub_total, N_Y_sub_total))/ Total) * 100  
   
